@@ -1,5 +1,5 @@
 use std::env;
-use resolver::Config;
+use resolver::{Config, resolve};
 
 fn main() {
     let args: Vec<String> = env::args().collect();
@@ -11,4 +11,6 @@ fn main() {
             return;
         }
     };
+
+    resolve(&config);
 }
