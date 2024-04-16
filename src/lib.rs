@@ -1,13 +1,12 @@
-use std::clone;
 use std::fs;
-
 use git2::Repository;
+use std::process::Command;
 
 pub const GIT_HARDHAT_JS_URL: &str = "https://github.com/mudgen/diamond-3-hardhat.git";
 pub const GIT_HARDHAT_TS_URL: &str = "https://github.com/Timidan/diamond-3-hardhat-typechain.git";
 pub const GIT_FOUNDRY_URL: &str = "https://github.com/FydeTreasury/Diamond-Foundry.git";
 
-pub enum Command {
+pub enum Action {
     Scaffold,
     Get
 }
@@ -19,7 +18,7 @@ pub enum Item {
 }
 
 pub struct Config {
-    pub command: Command,
+    pub action: Action,
     pub item: Item,
     pub project_name: String
 }
@@ -30,11 +29,11 @@ impl Config {
             return Err("Incomplete arguments");
         }
 
-        let command = args[1].clone();
+        let action = args[1].clone();
         let item = args[2].clone();
         let project_name = args[3].clone();
 
-        if command != String::from("scaffold") && command != String::from("get") {
+        if action != String::from("scaffold") && action != String::from("get") {
             return Err("Invalid command");
         }
 
@@ -46,12 +45,12 @@ impl Config {
             return Err("Input project name");
         }
 
-        match command.as_str() {
+        match action.as_str() {
             "get" => {
                 match item.as_str() {
-                    "hhjs" => Ok(Config {command: Command::Get, item: Item::HardhatJavascript, project_name}),
-                    "hhts" => Ok(Config {command: Command::Get, item: Item::HardhatTypescript, project_name}),
-                    "fd" => Ok(Config {command: Command::Get, item: Item::Foundry, project_name}),
+                    "hhjs" => Ok(Config {action: Action::Get, item: Item::HardhatJavascript, project_name}),
+                    "hhts" => Ok(Config {action: Action::Get, item: Item::HardhatTypescript, project_name}),
+                    "fd" => Ok(Config {action: Action::Get, item: Item::Foundry, project_name}),
                     _ => {
                         return Err("Wrong item name");
                     }
@@ -68,9 +67,8 @@ impl Config {
 }
 
 pub fn resolve(config: &Config) -> Result<(), git2::Error> {
-
-    match config.command {
-        Command::Get => {
+    match config.action {
+        Action::Get => {
             match config.item {
                 Item::HardhatJavascript => {
                     Repository::clone(GIT_HARDHAT_JS_URL, config.project_name.clone())?;
@@ -95,4 +93,24 @@ pub fn resolve(config: &Config) -> Result<(), git2::Error> {
     println!("Success: Happy building !!!");
 
     Ok(())
+}
+
+pub fn is_npm_installed() -> bool {
+    let output = Command::new("npm")
+        .arg("--version")
+        .output();
+
+
+    match output {
+        Ok(output) => {
+            if output.status.success() {
+                true
+            } else {
+                false
+            }
+        },
+        Err(e) => {
+            false
+        }
+    }
 }
