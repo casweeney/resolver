@@ -1,6 +1,7 @@
 use std::fs;
 use git2::Repository;
 use std::process::Command;
+use std::io::Result as IOResult;
 
 pub const GIT_DIAMOND_HARDHAT_JS_URL: &str = "https://github.com/mudgen/diamond-3-hardhat.git";
 pub const GIT_DIAMOND_HARDHAT_TS_URL: &str = "https://github.com/Timidan/diamond-3-hardhat-typechain.git";
@@ -16,7 +17,8 @@ pub enum Item {
     DiamondHardhatTypescript, // dhts
     DiamondFoundry, // dfd
     ReactJS,
-    ReactTS
+    ReactTS,
+    Hardhat
 }
 
 pub struct Config {
@@ -62,6 +64,7 @@ impl Config {
                 match item.as_str() {
                     "reactjs" => Ok(Config {action: Action::Scaffold, item: Item::ReactJS, project_name}),
                     "reactts" => Ok(Config {action: Action::Scaffold, item: Item::ReactTS, project_name}),
+                    "hardhat" => Ok(Config {action: Action::Scaffold, item: Item::Hardhat, project_name}),
                     _ => {
                         return Err("Wrong item name");
                     }
@@ -113,7 +116,15 @@ pub fn resolve(config: &Config) -> Result<(), git2::Error> {
                             Err(e) => eprintln!("Failed to create the TypeScript React project: {}", e),
                         }
                     }
-                }
+                },
+                Item::Hardhat => {
+                    if is_npm_installed() {
+                        match create_hardhat_project(config.project_name.clone()) {
+                            Ok(_) => println!("Successfully created the Hardhat project!"),
+                            Err(e) => eprintln!("Failed to create the Hardhat project: {}", e),
+                        }
+                    }
+                },
                 _ => return Err(git2::Error::from_str("Unsupported project type"))
             }
         }
@@ -142,7 +153,7 @@ fn is_npm_installed() -> bool {
     }
 }
 
-fn create_react_app(project_name: String) -> std::io::Result<()> {
+fn create_react_app(project_name: String) -> IOResult<()> {
     Command::new("npx")
         .args(["create-react-app", project_name.as_str()])
         .spawn()?
@@ -151,9 +162,27 @@ fn create_react_app(project_name: String) -> std::io::Result<()> {
     Ok(())
 }
 
-fn create_react_app_with_typescript(project_name: String) -> std::io::Result<()> {
+fn create_react_app_with_typescript(project_name: String) -> IOResult<()> {
     Command::new("npx")
         .args(["create-react-app", project_name.as_str(), "--template", "typescript"])
+        .spawn()?
+        .wait()?;
+
+    Ok(())
+}
+
+fn create_hardhat_project(project_name: String) -> IOResult<()> {
+    fs::create_dir_all(project_name.as_str())?;
+
+    Command::new("npm")
+        .args(["init", "--yes"])
+        .current_dir(project_name.as_str())
+        .spawn()?
+        .wait()?;
+
+    Command::new("npx")
+        .args(["hardhat", "init"])
+        .current_dir(project_name.as_str())
         .spawn()?
         .wait()?;
 
