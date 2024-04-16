@@ -2,9 +2,9 @@ use std::fs;
 use git2::Repository;
 use std::process::Command;
 
-pub const GIT_HARDHAT_JS_URL: &str = "https://github.com/mudgen/diamond-3-hardhat.git";
-pub const GIT_HARDHAT_TS_URL: &str = "https://github.com/Timidan/diamond-3-hardhat-typechain.git";
-pub const GIT_FOUNDRY_URL: &str = "https://github.com/FydeTreasury/Diamond-Foundry.git";
+pub const GIT_DIAMOND_HARDHAT_JS_URL: &str = "https://github.com/mudgen/diamond-3-hardhat.git";
+pub const GIT_DIAMOND_HARDHAT_TS_URL: &str = "https://github.com/Timidan/diamond-3-hardhat-typechain.git";
+pub const GIT_DIAMOND_FOUNDRY_URL: &str = "https://github.com/FydeTreasury/Diamond-Foundry.git";
 
 pub enum Action {
     Scaffold,
@@ -12,9 +12,9 @@ pub enum Action {
 }
 
 pub enum Item {
-    HardhatJavascript, // hhjs
-    HardhatTypescript, // hhts
-    Foundry, // fd
+    DiamondHardhatJavascript, // dhjs
+    DiamondHardhatTypescript, // dhts
+    DiamondFoundry, // dfd
     ReactJS,
     ReactTS
 }
@@ -50,9 +50,9 @@ impl Config {
         match action.as_str() {
             "get" => {
                 match item.as_str() {
-                    "hhjs" => Ok(Config {action: Action::Get, item: Item::HardhatJavascript, project_name}),
-                    "hhts" => Ok(Config {action: Action::Get, item: Item::HardhatTypescript, project_name}),
-                    "fd" => Ok(Config {action: Action::Get, item: Item::Foundry, project_name}),
+                    "dhjs" => Ok(Config {action: Action::Get, item: Item::DiamondHardhatJavascript, project_name}),
+                    "dhts" => Ok(Config {action: Action::Get, item: Item::DiamondHardhatTypescript, project_name}),
+                    "dfd" => Ok(Config {action: Action::Get, item: Item::DiamondFoundry, project_name}),
                     _ => {
                         return Err("Wrong item name");
                     }
@@ -78,9 +78,9 @@ pub fn resolve(config: &Config) -> Result<(), git2::Error> {
     match config.action {
         Action::Get => {
             let clone_url = match config.item {
-                Item::HardhatJavascript => GIT_HARDHAT_JS_URL,
-                Item::HardhatTypescript => GIT_HARDHAT_JS_URL,
-                Item::Foundry => GIT_HARDHAT_JS_URL,
+                Item::DiamondHardhatJavascript => GIT_DIAMOND_HARDHAT_JS_URL,
+                Item::DiamondHardhatTypescript => GIT_DIAMOND_HARDHAT_TS_URL,
+                Item::DiamondFoundry => GIT_DIAMOND_FOUNDRY_URL,
                 _ => return Err(git2::Error::from_str("Unsupported project type"))
             };
 
