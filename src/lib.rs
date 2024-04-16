@@ -166,6 +166,23 @@ fn is_npm_installed() -> bool {
     }
 }
 
+fn is_nestjs_installed() -> bool {
+    let output = Command::new("nest")
+        .arg("--version")
+        .output();
+
+    match output {
+        Ok(output) => {
+            if output.status.success() {
+                true
+            } else {
+                false
+            }
+        },
+        _ => false
+    }
+}
+
 fn create_react_app(project_name: String) -> IOResult<()> {
     Command::new("npx")
         .args(["create-react-app", project_name.as_str()])
@@ -203,10 +220,12 @@ fn create_hardhat_project(project_name: String) -> IOResult<()> {
 }
 
 fn create_nestjs_app(project_name: String) -> IOResult<()> {
-    Command::new("npm")
-        .args(["i", "-g", "@nestjs/cli"])
-        .spawn()?
-        .wait()?;
+    if !is_nestjs_installed() {
+        Command::new("npm")
+            .args(["i", "-g", "@nestjs/cli"])
+            .spawn()?
+            .wait()?;
+    }
 
     Command::new("nest")
         .args(["new", project_name.as_str()])
