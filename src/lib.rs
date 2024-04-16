@@ -15,7 +15,8 @@ pub enum Item {
     HardhatJavascript, // hhjs
     HardhatTypescript, // hhts
     Foundry, // fd
-    ReactJS
+    ReactJS,
+    ReactTS
 }
 
 pub struct Config {
@@ -60,6 +61,7 @@ impl Config {
             "scaffold" => {
                 match item.as_str() {
                     "reactjs" => Ok(Config {action: Action::Scaffold, item: Item::ReactJS, project_name}),
+                    "reactts" => Ok(Config {action: Action::Scaffold, item: Item::ReactTS, project_name}),
                     _ => {
                         return Err("Wrong item name");
                     }
@@ -84,14 +86,32 @@ pub fn resolve(config: &Config) -> Result<(), git2::Error> {
 
             Repository::clone(clone_url, &config.project_name)?;
 
+            // Remove .git directory from clone project
+            let git_dir = format!("{}/.git", config.project_name);
+
+            if fs::remove_dir_all(&git_dir).is_err() {
+                println!("Warning: Failed to remove .git directory");
+            }
+
         },
         Action::Scaffold => {
             match config.item {
                 Item::ReactJS => {
                     if is_npm_installed() {
-
+                        match create_react_app(config.project_name.clone()) {
+                            Ok(_) => println!("Successfully created the React project!"),
+                            Err(e) => eprintln!("Failed to create the React project: {}", e),
+                        }
                     } else {
-
+                        println!("You don't have npm installed")
+                    }
+                },
+                Item::ReactTS => {
+                    if is_npm_installed() {
+                        match create_react_app_with_typescript(config.project_name.clone()) {
+                            Ok(_) => println!("Successfully created the TypeScript React project!"),
+                            Err(e) => eprintln!("Failed to create the TypeScript React project: {}", e),
+                        }
                     }
                 }
                 _ => return Err(git2::Error::from_str("Unsupported project type"))
@@ -101,12 +121,6 @@ pub fn resolve(config: &Config) -> Result<(), git2::Error> {
             println!("Unsupported action: Use only 'Get' or 'Scaffold' command");
             return Err(git2::Error::from_str("Unsupported action"));
         }
-    }
-
-    // Remove .git directory from clone project
-    let git_dir = format!("{}/.git", config.project_name);
-    if fs::remove_dir_all(&git_dir).is_err() {
-        println!("Warning: Failed to remove .git directory");
     }
 
     println!("Success: Happy building !!!");
@@ -132,4 +146,22 @@ fn is_npm_installed() -> bool {
             false
         }
     }
+}
+
+fn create_react_app(project_name: String) -> std::io::Result<()> {
+    Command::new("npx")
+        .args(["create-react-app", project_name.as_str()])
+        .spawn()?
+        .wait()?;
+
+    Ok(())
+}
+
+fn create_react_app_with_typescript(project_name: String) -> std::io::Result<()> {
+    Command::new("npx")
+        .args(["create-react-app", project_name.as_str(), "--template", "typescript"])
+        .spawn()?
+        .wait()?;
+
+    Ok(())
 }
