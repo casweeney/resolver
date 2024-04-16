@@ -15,6 +15,7 @@ pub enum Item {
     HardhatJavascript, // hhjs
     HardhatTypescript, // hhts
     Foundry, // fd
+    ReactJS
 }
 
 pub struct Config {
@@ -57,7 +58,12 @@ impl Config {
                 }
             },
             "scaffold" => {
-                return Err("Use only get command");
+                match item.as_str() {
+                    "reactjs" => Ok(Config {action: Action::Scaffold, item: Item::ReactJS, project_name}),
+                    _ => {
+                        return Err("Wrong item name");
+                    }
+                }
             }
             _ => {
                 return Err("Use only get command");
@@ -69,33 +75,46 @@ impl Config {
 pub fn resolve(config: &Config) -> Result<(), git2::Error> {
     match config.action {
         Action::Get => {
-            match config.item {
-                Item::HardhatJavascript => {
-                    Repository::clone(GIT_HARDHAT_JS_URL, config.project_name.clone())?;
-                },
-                Item::HardhatTypescript => {
-                    Repository::clone(GIT_HARDHAT_JS_URL, config.project_name.clone())?;
-                },
-                Item::Foundry => {
-                    Repository::clone(GIT_HARDHAT_JS_URL, config.project_name.clone())?;
-                }
-            }
+            let clone_url = match config.item {
+                Item::HardhatJavascript => GIT_HARDHAT_JS_URL,
+                Item::HardhatTypescript => GIT_HARDHAT_JS_URL,
+                Item::Foundry => GIT_HARDHAT_JS_URL,
+                _ => return Err(git2::Error::from_str("Unsupported project type"))
+            };
+
+            Repository::clone(clone_url, &config.project_name)?;
+
         },
+        Action::Scaffold => {
+            match config.item {
+                Item::ReactJS => {
+                    if is_npm_installed() {
+
+                    } else {
+
+                    }
+                }
+                _ => return Err(git2::Error::from_str("Unsupported project type"))
+            }
+        }
         _ => {
-            println!("Use only get command");
+            println!("Unsupported action: Use only 'Get' or 'Scaffold' command");
+            return Err(git2::Error::from_str("Unsupported action"));
         }
     }
 
     // Remove .git directory from clone project
     let git_dir = format!("{}/.git", config.project_name);
-    fs::remove_dir_all(git_dir).unwrap();
+    if fs::remove_dir_all(&git_dir).is_err() {
+        println!("Warning: Failed to remove .git directory");
+    }
 
     println!("Success: Happy building !!!");
 
     Ok(())
 }
 
-pub fn is_npm_installed() -> bool {
+fn is_npm_installed() -> bool {
     let output = Command::new("npm")
         .arg("--version")
         .output();
