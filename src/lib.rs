@@ -6,6 +6,7 @@ use std::io::Result as IOResult;
 pub const GIT_DIAMOND_HARDHAT_JS_URL: &str = "https://github.com/mudgen/diamond-3-hardhat.git";
 pub const GIT_DIAMOND_HARDHAT_TS_URL: &str = "https://github.com/Timidan/diamond-3-hardhat-typechain.git";
 pub const GIT_DIAMOND_FOUNDRY_URL: &str = "https://github.com/FydeTreasury/Diamond-Foundry.git";
+pub const GIT_NEST_JS_URL: &str = "https://github.com/nestjs/typescript-starter.git";
 
 pub enum Action {
     Scaffold,
@@ -18,7 +19,8 @@ pub enum Item {
     DiamondFoundry, // dfd
     ReactJS,
     ReactTS,
-    Hardhat
+    Hardhat,
+    NestJs
 }
 
 pub struct Config {
@@ -55,6 +57,7 @@ impl Config {
                     "dhjs" => Ok(Config {action: Action::Get, item: Item::DiamondHardhatJavascript, project_name}),
                     "dhts" => Ok(Config {action: Action::Get, item: Item::DiamondHardhatTypescript, project_name}),
                     "dfd" => Ok(Config {action: Action::Get, item: Item::DiamondFoundry, project_name}),
+                    "nestjs" => Ok(Config {action: Action::Get, item: Item::NestJs, project_name}),
                     _ => {
                         return Err("Wrong item name");
                     }
@@ -65,6 +68,7 @@ impl Config {
                     "reactjs" => Ok(Config {action: Action::Scaffold, item: Item::ReactJS, project_name}),
                     "reactts" => Ok(Config {action: Action::Scaffold, item: Item::ReactTS, project_name}),
                     "hardhat" => Ok(Config {action: Action::Scaffold, item: Item::Hardhat, project_name}),
+                    "nestjs" => Ok(Config {action: Action::Scaffold, item: Item::NestJs, project_name}),
                     _ => {
                         return Err("Wrong item name");
                     }
@@ -84,6 +88,7 @@ pub fn resolve(config: &Config) -> Result<(), git2::Error> {
                 Item::DiamondHardhatJavascript => GIT_DIAMOND_HARDHAT_JS_URL,
                 Item::DiamondHardhatTypescript => GIT_DIAMOND_HARDHAT_TS_URL,
                 Item::DiamondFoundry => GIT_DIAMOND_FOUNDRY_URL,
+                Item::NestJs => GIT_NEST_JS_URL,
                 _ => return Err(git2::Error::from_str("Unsupported project type"))
             };
 
@@ -125,6 +130,14 @@ pub fn resolve(config: &Config) -> Result<(), git2::Error> {
                         }
                     }
                 },
+                Item::NestJs => {
+                    if is_npm_installed() {
+                        match create_nestjs_app(config.project_name.clone()) {
+                            Ok(_) => println!("Successfully created the Nestjs project!"),
+                            Err(e) => eprintln!("Failed to create the Nestjs project: {}", e),
+                        }
+                    }
+                }
                 _ => return Err(git2::Error::from_str("Unsupported project type"))
             }
         }
@@ -183,6 +196,20 @@ fn create_hardhat_project(project_name: String) -> IOResult<()> {
     Command::new("npx")
         .args(["hardhat", "init"])
         .current_dir(project_name.as_str())
+        .spawn()?
+        .wait()?;
+
+    Ok(())
+}
+
+fn create_nestjs_app(project_name: String) -> IOResult<()> {
+    Command::new("npm")
+        .args(["i", "-g", "@nestjs/cli"])
+        .spawn()?
+        .wait()?;
+
+    Command::new("nest")
+        .args(["new", project_name.as_str()])
         .spawn()?
         .wait()?;
 
