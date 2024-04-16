@@ -117,10 +117,6 @@ pub fn resolve(config: &Config) -> Result<(), git2::Error> {
                 _ => return Err(git2::Error::from_str("Unsupported project type"))
             }
         }
-        _ => {
-            println!("Unsupported action: Use only 'Get' or 'Scaffold' command");
-            return Err(git2::Error::from_str("Unsupported action"));
-        }
     }
 
     println!("Success: Happy building !!!");
@@ -142,9 +138,7 @@ fn is_npm_installed() -> bool {
                 false
             }
         },
-        Err(e) => {
-            false
-        }
+        _ => false
     }
 }
 

@@ -12,6 +12,8 @@ fn main() {
         }
     };
 
-    resolve(&config);
+    if let Err(e) = resolve(&config) {
+        eprintln!("Error: resolver failed: {}", e);
+    }
 
 }
