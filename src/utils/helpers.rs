@@ -116,3 +116,12 @@ pub fn create_laravel_project(project_name: String) -> IOResult<()> {
 
     Ok(())
 }
+
+pub fn create_next_app(project_name: String) -> IOResult<()> {
+    Command::new("npx")
+        .args(["create-next-app@latest", project_name.as_str()])
+        .spawn()?
+        .wait()?;
+
+    Ok(())
+}
