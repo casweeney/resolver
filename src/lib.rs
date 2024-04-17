@@ -40,11 +40,11 @@ impl Config {
         let project_name = args[3].clone();
 
         if action != String::from("scaffold") && action != String::from("get") {
-            return Err("Invalid command");
+            return Err("Invalid action");
         }
 
         if item.is_empty() {
-            return Err("Invalid item");
+            return Err("Input item");
         }
 
         if project_name.is_empty() {
@@ -59,7 +59,7 @@ impl Config {
                     "dfd" => Ok(Config {action: Action::Get, item: Item::DiamondFoundry, project_name}),
                     "nestjs" => Ok(Config {action: Action::Get, item: Item::NestJs, project_name}),
                     _ => {
-                        return Err("Wrong item name");
+                        return Err("Invalid item for 'get' action");
                     }
                 }
             },
@@ -70,12 +70,12 @@ impl Config {
                     "hardhat" => Ok(Config {action: Action::Scaffold, item: Item::Hardhat, project_name}),
                     "nestjs" => Ok(Config {action: Action::Scaffold, item: Item::NestJs, project_name}),
                     _ => {
-                        return Err("Wrong item name");
+                        return Err("Invalid item for 'scaffold' action");
                     }
                 }
             }
             _ => {
-                return Err("Use only get command");
+                return Err("Invalid action: use 'get' or 'scaffold'");
             }
         }
     }
