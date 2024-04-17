@@ -1,7 +1,9 @@
 use std::fs;
 use git2::Repository;
-use std::process::Command;
-use std::io::Result as IOResult;
+
+pub mod utils;
+use utils::helpers::*;
+
 
 pub const GIT_DIAMOND_HARDHAT_JS_URL: &str = "https://github.com/mudgen/diamond-3-hardhat.git";
 pub const GIT_DIAMOND_HARDHAT_TS_URL: &str = "https://github.com/Timidan/diamond-3-hardhat-typechain.git";
@@ -20,7 +22,8 @@ pub enum Item {
     ReactJS,
     ReactTS,
     Hardhat,
-    NestJs
+    NestJs,
+    Laravel,
 }
 
 pub struct Config {
@@ -40,11 +43,11 @@ impl Config {
         let project_name = args[3].clone();
 
         if action != String::from("scaffold") && action != String::from("get") {
-            return Err("Invalid command");
+            return Err("Invalid action");
         }
 
         if item.is_empty() {
-            return Err("Invalid item");
+            return Err("Input item");
         }
 
         if project_name.is_empty() {
@@ -59,7 +62,7 @@ impl Config {
                     "dfd" => Ok(Config {action: Action::Get, item: Item::DiamondFoundry, project_name}),
                     "nestjs" => Ok(Config {action: Action::Get, item: Item::NestJs, project_name}),
                     _ => {
-                        return Err("Wrong item name");
+                        return Err("Invalid item for 'get' action");
                     }
                 }
             },
@@ -69,13 +72,14 @@ impl Config {
                     "reactts" => Ok(Config {action: Action::Scaffold, item: Item::ReactTS, project_name}),
                     "hardhat" => Ok(Config {action: Action::Scaffold, item: Item::Hardhat, project_name}),
                     "nestjs" => Ok(Config {action: Action::Scaffold, item: Item::NestJs, project_name}),
+                    "laravel" => Ok(Config {action: Action::Scaffold, item: Item::Laravel, project_name}),
                     _ => {
-                        return Err("Wrong item name");
+                        return Err("Invalid item for 'scaffold' action");
                     }
                 }
             }
             _ => {
-                return Err("Use only get command");
+                return Err("Invalid action: use 'get' or 'scaffold'");
             }
         }
     }
@@ -138,99 +142,20 @@ pub fn resolve(config: &Config) -> Result<(), git2::Error> {
                         }
                     }
                 }
+                Item::Laravel => {
+                    if is_php_installed() && is_laravel_installed() {
+                        match create_laravel_project(config.project_name.clone()) {
+                            Ok(_) => println!("Successfully created the Laravel project!"),
+                            Err(e) => eprintln!("Failed to create the Laravel project: {}", e),
+                        }
+                    }
+                }
                 _ => return Err(git2::Error::from_str("Unsupported project type"))
             }
         }
     }
 
     println!("Success: Happy building !!!");
-
-    Ok(())
-}
-
-fn is_npm_installed() -> bool {
-    let output = Command::new("npm")
-        .arg("--version")
-        .output();
-
-
-    match output {
-        Ok(output) => {
-            if output.status.success() {
-                true
-            } else {
-                false
-            }
-        },
-        _ => false
-    }
-}
-
-fn is_nestjs_installed() -> bool {
-    let output = Command::new("nest")
-        .arg("--version")
-        .output();
-
-    match output {
-        Ok(output) => {
-            if output.status.success() {
-                true
-            } else {
-                false
-            }
-        },
-        _ => false
-    }
-}
-
-fn create_react_app(project_name: String) -> IOResult<()> {
-    Command::new("npx")
-        .args(["create-react-app", project_name.as_str()])
-        .spawn()?
-        .wait()?;
-
-    Ok(())
-}
-
-fn create_react_app_with_typescript(project_name: String) -> IOResult<()> {
-    Command::new("npx")
-        .args(["create-react-app", project_name.as_str(), "--template", "typescript"])
-        .spawn()?
-        .wait()?;
-
-    Ok(())
-}
-
-fn create_hardhat_project(project_name: String) -> IOResult<()> {
-    fs::create_dir_all(project_name.as_str())?;
-
-    Command::new("npm")
-        .args(["init", "--yes"])
-        .current_dir(project_name.as_str())
-        .spawn()?
-        .wait()?;
-
-    Command::new("npx")
-        .args(["hardhat", "init"])
-        .current_dir(project_name.as_str())
-        .spawn()?
-        .wait()?;
-
-    Ok(())
-}
-
-fn create_nestjs_app(project_name: String) -> IOResult<()> {
-    if !is_nestjs_installed() {
-        Command::new("npm")
-            .args(["i", "-g", "@nestjs/cli"])
-            .spawn()?
-            .wait()?;
-    }
-
-    Command::new("nest")
-        .args(["new", project_name.as_str()])
-        .spawn()?
-        .wait()?;
 
     Ok(())
 }
