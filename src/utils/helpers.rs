@@ -1,5 +1,5 @@
 use std::fs;
-use std::process::Command;
+use std::process::{Command, Output};
 pub use std::io::Result as IOResult;
 
 pub fn is_npm_installed() -> bool {
@@ -22,6 +22,40 @@ pub fn is_npm_installed() -> bool {
 
 pub fn is_nestjs_installed() -> bool {
     let output = Command::new("nest")
+        .arg("--version")
+        .output();
+
+    match output {
+        Ok(output) => {
+            if output.status.success() {
+                true
+            } else {
+                false
+            }
+        },
+        _ => false
+    }
+}
+
+pub fn is_php_installed() -> bool {
+    let output = Command::new("php")
+        .arg("--version")
+        .output();
+
+    match output {
+        Ok(output) => {
+            if output.status.success() {
+                true
+            } else {
+                false
+            }
+        },
+        _ => false
+    }
+}
+
+pub fn is_laravel_installed() -> bool {
+    let output = Command::new("composer")
         .arg("--version")
         .output();
 
@@ -83,6 +117,17 @@ pub fn create_nestjs_app(project_name: String) -> IOResult<()> {
 
     Command::new("nest")
         .args(["new", project_name.as_str()])
+        .spawn()?
+        .wait()?;
+
+    Ok(())
+}
+
+pub fn create_laravel_project(project_name: String) -> IOResult<()> {
+    println!("Creating Laravel project: {}", project_name);
+
+    Command::new("composer")
+        .args(["create-project", "laravel/laravel", project_name.as_str()])
         .spawn()?
         .wait()?;
 

@@ -22,7 +22,8 @@ pub enum Item {
     ReactJS,
     ReactTS,
     Hardhat,
-    NestJs
+    NestJs,
+    Laravel,
 }
 
 pub struct Config {
@@ -71,6 +72,7 @@ impl Config {
                     "reactts" => Ok(Config {action: Action::Scaffold, item: Item::ReactTS, project_name}),
                     "hardhat" => Ok(Config {action: Action::Scaffold, item: Item::Hardhat, project_name}),
                     "nestjs" => Ok(Config {action: Action::Scaffold, item: Item::NestJs, project_name}),
+                    "laravel" => Ok(Config {action: Action::Scaffold, item: Item::Laravel, project_name}),
                     _ => {
                         return Err("Invalid item for 'scaffold' action");
                     }
@@ -137,6 +139,14 @@ pub fn resolve(config: &Config) -> Result<(), git2::Error> {
                         match create_nestjs_app(config.project_name.clone()) {
                             Ok(_) => println!("Successfully created the Nestjs project!"),
                             Err(e) => eprintln!("Failed to create the Nestjs project: {}", e),
+                        }
+                    }
+                }
+                Item::Laravel => {
+                    if is_php_installed() && is_laravel_installed() {
+                        match create_laravel_project(config.project_name.clone()) {
+                            Ok(_) => println!("Successfully created the Laravel project!"),
+                            Err(e) => eprintln!("Failed to create the Laravel project: {}", e),
                         }
                     }
                 }
