@@ -24,3 +24,50 @@ cargo install resolver
 ```
 
 ## Usage
+With `resolver` you can create projects for different development tools and programming languages. Resolver has two action commands `get` and `scaffold`.
+
+The `get` action is used to clone selected Diamond Standard Templates from GitHub which covers for Hardhat JavaScript, Hardhat TypeScript and Foundry.
+
+The `scaffold` action is used to scaffold projects for different development tools and languages which includes:
+- ReactJS
+- ReactTs
+- Hardhat
+- NestJs
+- Laravel
+- NextJs
+
+#### ReactJS
+Creates a React project with JavaScript
+```sh
+resolver scaffold reactjs project_name
+```
+
+#### ReactTS
+Creates a React project with TypeScript
+```sh
+resolver scaffold reactts project_name
+```
+
+#### Hardhat
+Creates a Hardhat Solidity project
+```sh
+resolver scaffold hardhat project_name
+```
+
+#### NestJs
+Creates a NestJS project
+```sh
+resolver scaffold nestjs project_name
+```
+
+#### Laravel
+Creates a Laravel PHP project
+```sh
+resolver scaffold laravel project_name
+```
+
+#### NextJS
+Creates a NextJS project
+```sh
+resolver scaffold nextjs project_name
+```
