@@ -1,4 +1,5 @@
 use std::fs;
+use std::io::Error;
 use std::process::{Command, Output};
 pub use std::io::Result as IOResult;
 
@@ -7,17 +8,7 @@ pub fn is_npm_installed() -> bool {
         .arg("--version")
         .output();
 
-
-    match output {
-        Ok(output) => {
-            if output.status.success() {
-                true
-            } else {
-                false
-            }
-        },
-        _ => false
-    }
+    check_output(output)
 }
 
 pub fn is_nestjs_installed() -> bool {
@@ -25,16 +16,7 @@ pub fn is_nestjs_installed() -> bool {
         .arg("--version")
         .output();
 
-    match output {
-        Ok(output) => {
-            if output.status.success() {
-                true
-            } else {
-                false
-            }
-        },
-        _ => false
-    }
+    check_output(output)
 }
 
 pub fn is_php_installed() -> bool {
@@ -42,16 +24,7 @@ pub fn is_php_installed() -> bool {
         .arg("--version")
         .output();
 
-    match output {
-        Ok(output) => {
-            if output.status.success() {
-                true
-            } else {
-                false
-            }
-        },
-        _ => false
-    }
+    check_output(output)
 }
 
 pub fn is_laravel_installed() -> bool {
@@ -59,6 +32,10 @@ pub fn is_laravel_installed() -> bool {
         .arg("--version")
         .output();
 
+    check_output(output)
+}
+
+fn check_output(output: Result<Output, Error>) -> bool {
     match output {
         Ok(output) => {
             if output.status.success() {
