@@ -1,5 +1,5 @@
+use resolver::{resolve, Config};
 use std::env;
-use resolver::{Config, resolve};
 
 fn main() {
     let args: Vec<String> = env::args().collect();
@@ -15,5 +15,4 @@ fn main() {
     if let Err(e) = resolve(&config) {
         eprintln!("Error: resolver failed: {}", e);
     }
-
 }
