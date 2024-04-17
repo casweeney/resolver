@@ -24,6 +24,7 @@ pub enum Item {
     Hardhat,
     NestJs,
     Laravel,
+    NextJs,
 }
 
 pub struct Config {
@@ -73,6 +74,7 @@ impl Config {
                     "hardhat" => Ok(Config {action: Action::Scaffold, item: Item::Hardhat, project_name}),
                     "nestjs" => Ok(Config {action: Action::Scaffold, item: Item::NestJs, project_name}),
                     "laravel" => Ok(Config {action: Action::Scaffold, item: Item::Laravel, project_name}),
+                    "nextjs" => Ok(Config {action: Action::Scaffold, item: Item::NextJs, project_name}),
                     _ => {
                         return Err("Invalid item for 'scaffold' action");
                     }
@@ -147,6 +149,14 @@ pub fn resolve(config: &Config) -> Result<(), git2::Error> {
                         match create_laravel_project(config.project_name.clone()) {
                             Ok(_) => println!("Successfully created the Laravel project!"),
                             Err(e) => eprintln!("Failed to create the Laravel project: {}", e),
+                        }
+                    }
+                },
+                Item::NextJs => {
+                    if is_npm_installed() {
+                        match create_next_app(config.project_name.clone()) {
+                            Ok(_) => println!("Successfully created the Next application!"),
+                            Err(e) => eprintln!("Failed to create the Next application: {}", e),
                         }
                     }
                 }

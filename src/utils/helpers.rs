@@ -3,6 +3,9 @@ use std::io::Error;
 use std::process::{Command, Output};
 pub use std::io::Result as IOResult;
 
+// -------------------
+// Checker functions
+// -------------------
 pub fn is_npm_installed() -> bool {
     let output = Command::new("npm")
         .arg("--version")
@@ -48,6 +51,9 @@ fn check_output(output: Result<Output, Error>) -> bool {
     }
 }
 
+// -------------------
+// Scaffold functions
+// -------------------
 pub fn create_react_app(project_name: String) -> IOResult<()> {
     Command::new("npx")
         .args(["create-react-app", project_name.as_str()])
@@ -105,6 +111,15 @@ pub fn create_laravel_project(project_name: String) -> IOResult<()> {
 
     Command::new("composer")
         .args(["create-project", "laravel/laravel", project_name.as_str()])
+        .spawn()?
+        .wait()?;
+
+    Ok(())
+}
+
+pub fn create_next_app(project_name: String) -> IOResult<()> {
+    Command::new("npx")
+        .args(["create-next-app@latest", project_name.as_str()])
         .spawn()?
         .wait()?;
 
