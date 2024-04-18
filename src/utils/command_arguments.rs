@@ -8,12 +8,13 @@ pub struct ClapperArgs {
 }
 
 // ---------------
-// Valid Commands
+// Valid Commands: get | scaffold
 // ---------------
 #[derive(Debug, Subcommand)]
 pub enum EntityType {
-    /// Clones repositories
+    /// Clones projects boilerplate for diamond standard (JavaScript, TypeScript and Foundry) and NestJs
     Get(GetCommand),
+    /// Scaffolds projects for any development tool
     Scaffold(ScaffoldCommand),
 }
 
@@ -29,9 +30,13 @@ pub struct GetCommand{
 
 #[derive(Debug, Subcommand)]
 pub enum GetSubCommand {
+    /// Clones a diamond standard JavaScript project 
     Dhjs(GetDir),
+    /// Clones a diamond standard TypeScript project
     Dhts(GetDir),
+    /// Clones a diamond standard Foundry project
     Dfd(GetDir),
+    /// Clones a NestJS project boilerplate
     Nestjs(GetDir)
 }
 
@@ -46,11 +51,17 @@ pub struct ScaffoldCommand{
 
 #[derive(Debug, Subcommand)]
 pub enum ScaffoldSubCommand {
+    /// Scaffolds a create-react-app JavaScript project
     Reactjs(GetDir),
+    /// Scaffolds a create-react-app TypeScript project
     Reactts(GetDir),
+    /// Scaffolds a Hardhat project
     Hardhat(GetDir),
+    /// Scaffolds a NestJS project
     Nestjs(GetDir),
+    /// Scaffolds a Laravel project
     Laravel(GetDir),
+    /// Scaffolds a Next project
     Nextjs(GetDir),
 }
 
