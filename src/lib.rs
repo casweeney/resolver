@@ -1,118 +1,34 @@
-use std::fs;
+// use std::fs;
 use git2::Repository;
+use std::error::Error;
 
 pub mod utils;
 use utils::helpers::*;
+use utils::constants::*;
+pub use utils::command_arguments::*;
 
 
-pub const GIT_DIAMOND_HARDHAT_JS_URL: &str = "https://github.com/mudgen/diamond-3-hardhat.git";
-pub const GIT_DIAMOND_HARDHAT_TS_URL: &str = "https://github.com/Timidan/diamond-3-hardhat-typechain.git";
-pub const GIT_DIAMOND_FOUNDRY_URL: &str = "https://github.com/FydeTreasury/Diamond-Foundry.git";
-pub const GIT_NEST_JS_URL: &str = "https://github.com/nestjs/typescript-starter.git";
-
-pub enum Action {
-    Scaffold,
-    Get
-}
-
-pub enum Item {
-    DiamondHardhatJavascript, // dhjs
-    DiamondHardhatTypescript, // dhts
-    DiamondFoundry, // dfd
-    ReactJS,
-    ReactTS,
-    Hardhat,
-    NestJs,
-    Laravel,
-    NextJs,
-}
-
-pub struct Config {
-    pub action: Action,
-    pub item: Item,
-    pub project_name: String
-}
-
-impl Config {
-    pub fn init(args: Vec<String>) -> Result<Config, &'static str> {
-        if args.len() < 4 {
-            return Err("Incomplete arguments");
-        }
-
-        let action = args[1].clone();
-        let item = args[2].clone();
-        let project_name = args[3].clone();
-
-        if action != String::from("scaffold") && action != String::from("get") {
-            return Err("Invalid action");
-        }
-
-        if item.is_empty() {
-            return Err("Input item");
-        }
-
-        if project_name.is_empty() {
-            return Err("Input project name");
-        }
-
-        match action.as_str() {
-            "get" => {
-                match item.as_str() {
-                    "dhjs" => Ok(Config {action: Action::Get, item: Item::DiamondHardhatJavascript, project_name}),
-                    "dhts" => Ok(Config {action: Action::Get, item: Item::DiamondHardhatTypescript, project_name}),
-                    "dfd" => Ok(Config {action: Action::Get, item: Item::DiamondFoundry, project_name}),
-                    "nestjs" => Ok(Config {action: Action::Get, item: Item::NestJs, project_name}),
-                    _ => {
-                        return Err("Invalid item for 'get' action");
-                    }
-                }
-            },
-            "scaffold" => {
-                match item.as_str() {
-                    "reactjs" => Ok(Config {action: Action::Scaffold, item: Item::ReactJS, project_name}),
-                    "reactts" => Ok(Config {action: Action::Scaffold, item: Item::ReactTS, project_name}),
-                    "hardhat" => Ok(Config {action: Action::Scaffold, item: Item::Hardhat, project_name}),
-                    "nestjs" => Ok(Config {action: Action::Scaffold, item: Item::NestJs, project_name}),
-                    "laravel" => Ok(Config {action: Action::Scaffold, item: Item::Laravel, project_name}),
-                    "nextjs" => Ok(Config {action: Action::Scaffold, item: Item::NextJs, project_name}),
-                    _ => {
-                        return Err("Invalid item for 'scaffold' action");
-                    }
-                }
-            }
-            _ => {
-                return Err("Invalid action: use 'get' or 'scaffold'");
-            }
-        }
-    }
-}
-
-pub fn resolve(config: &Config) -> Result<(), git2::Error> {
-    match config.action {
-        Action::Get => {
-            let clone_url = match config.item {
-                Item::DiamondHardhatJavascript => GIT_DIAMOND_HARDHAT_JS_URL,
-                Item::DiamondHardhatTypescript => GIT_DIAMOND_HARDHAT_TS_URL,
-                Item::DiamondFoundry => GIT_DIAMOND_FOUNDRY_URL,
-                Item::NestJs => GIT_NEST_JS_URL,
-                _ => return Err(git2::Error::from_str("Unsupported project type"))
+pub fn resolve(args: ClapperArgs) -> Result<(), Box<dyn Error>> {
+    match args.entity_type {
+        EntityType::Get(get_command) => {
+            match get_command.command {
+                GetSubCommand::Dhjs(dir) => Repository::clone(GIT_DIAMOND_HARDHAT_JS_URL, &dir.dir_name)?,
+                GetSubCommand::Dhts(dir) => Repository::clone(GIT_DIAMOND_HARDHAT_TS_URL, &dir.dir_name)?,
+                GetSubCommand::Dfd(dir) => Repository::clone(GIT_DIAMOND_FOUNDRY_URL, &dir.dir_name)?,
+                GetSubCommand::Nestjs(dir) => Repository::clone(GIT_NEST_JS_URL, &dir.dir_name)?,
             };
 
-            Repository::clone(clone_url, &config.project_name)?;
+            // let git_dir = format!("{}/.git", config.project_name);
 
-            // Remove .git directory from clone project
-            let git_dir = format!("{}/.git", config.project_name);
-
-            if fs::remove_dir_all(&git_dir).is_err() {
-                println!("Warning: Failed to remove .git directory");
-            }
-
+            // if fs::remove_dir_all(&git_dir).is_err() {
+            //     println!("Warning: Failed to remove .git directory");
+            // }
         },
-        Action::Scaffold => {
-            match config.item {
-                Item::ReactJS => {
+        EntityType::Scaffold(scaffold_command) => {
+            match scaffold_command.command {
+                ScaffoldSubCommand::Reactjs(dir) => {
                     if is_npm_installed() {
-                        match create_react_app(config.project_name.clone()) {
+                        match create_react_app(dir.dir_name.clone()) {
                             Ok(_) => println!("Successfully created the React project!"),
                             Err(e) => eprintln!("Failed to create the React project: {}", e),
                         }
@@ -120,52 +36,49 @@ pub fn resolve(config: &Config) -> Result<(), git2::Error> {
                         println!("You don't have npm installed")
                     }
                 },
-                Item::ReactTS => {
+                ScaffoldSubCommand::Reactts(dir) => {
                     if is_npm_installed() {
-                        match create_react_app_with_typescript(config.project_name.clone()) {
+                        match create_react_app_with_typescript(dir.dir_name.clone()) {
                             Ok(_) => println!("Successfully created the TypeScript React project!"),
                             Err(e) => eprintln!("Failed to create the TypeScript React project: {}", e),
                         }
                     }
                 },
-                Item::Hardhat => {
+                ScaffoldSubCommand::Hardhat(dir) => {
                     if is_npm_installed() {
-                        match create_hardhat_project(config.project_name.clone()) {
+                        match create_hardhat_project(dir.dir_name.clone()) {
                             Ok(_) => println!("Successfully created the Hardhat project!"),
                             Err(e) => eprintln!("Failed to create the Hardhat project: {}", e),
                         }
                     }
                 },
-                Item::NestJs => {
+                ScaffoldSubCommand::Nestjs(dir) => {
                     if is_npm_installed() {
-                        match create_nestjs_app(config.project_name.clone()) {
+                        match create_nestjs_app(dir.dir_name.clone()) {
                             Ok(_) => println!("Successfully created the Nestjs project!"),
                             Err(e) => eprintln!("Failed to create the Nestjs project: {}", e),
                         }
                     }
-                }
-                Item::Laravel => {
+                },
+                ScaffoldSubCommand::Laravel(dir) => {
                     if is_php_installed() && is_laravel_installed() {
-                        match create_laravel_project(config.project_name.clone()) {
+                        match create_laravel_project(dir.dir_name.clone()) {
                             Ok(_) => println!("Successfully created the Laravel project!"),
                             Err(e) => eprintln!("Failed to create the Laravel project: {}", e),
                         }
                     }
                 },
-                Item::NextJs => {
+                ScaffoldSubCommand::Nextjs(dir) => {
                     if is_npm_installed() {
-                        match create_next_app(config.project_name.clone()) {
+                        match create_next_app(dir.dir_name.clone()) {
                             Ok(_) => println!("Successfully created the Next application!"),
                             Err(e) => eprintln!("Failed to create the Next application: {}", e),
                         }
                     }
                 }
-                _ => return Err(git2::Error::from_str("Unsupported project type"))
             }
         }
     }
-
-    println!("Success: Happy building !!!");
 
     Ok(())
 }
