@@ -1,4 +1,4 @@
-use std::fs;
+// use std::fs;
 use git2::Repository;
 use clap::{Args, Parser, Subcommand};
 use std::error::Error;
@@ -92,10 +92,10 @@ impl Config {
         match args.entity_type {
             EntityType::Get(get_command) => {
                 match get_command.command {
-                    GetSubCommand::Dhjs(dir) => Repository::clone("GIT_DIAMOND_HARDHAT_JS_URL", &dir.dir_name)?,
-                    GetSubCommand::Dhts(dir) => Repository::clone("GIT_DIAMOND_HARDHAT_TS_URL", &dir.dir_name)?,
-                    GetSubCommand::Dfd(dir) => Repository::clone("GIT_DIAMOND_FOUNDRY_URL", &dir.dir_name)?,
-                    GetSubCommand::Nestjs(dir) => Repository::clone("GIT_NEST_JS_URL", &dir.dir_name)?,
+                    GetSubCommand::Dhjs(dir) => Repository::clone(GIT_DIAMOND_HARDHAT_JS_URL, &dir.dir_name)?,
+                    GetSubCommand::Dhts(dir) => Repository::clone(GIT_DIAMOND_HARDHAT_TS_URL, &dir.dir_name)?,
+                    GetSubCommand::Dfd(dir) => Repository::clone(GIT_DIAMOND_FOUNDRY_URL, &dir.dir_name)?,
+                    GetSubCommand::Nestjs(dir) => Repository::clone(GIT_NEST_JS_URL, &dir.dir_name)?,
                 };
 
                 // let git_dir = format!("{}/.git", config.project_name);
