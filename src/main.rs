@@ -1,18 +1,15 @@
-use resolver::{resolve, Config};
-use std::env;
+use resolver::Config;
+use resolver::ClapperArgs;
+use clap::Parser;
 
 fn main() {
-    let args: Vec<String> = env::args().collect();
+    let args: ClapperArgs = ClapperArgs::parse();
 
-    let config = match Config::init(args) {
+    match Config::resolve(args) {
         Ok(cfg) => cfg,
         Err(e) => {
-            eprintln!("Error initializing configuration: {}", e);
+            eprintln!("Error: resolver failed: {}", e);
             return;
         }
     };
-
-    if let Err(e) = resolve(&config) {
-        eprintln!("Error: resolver failed: {}", e);
-    }
 }
