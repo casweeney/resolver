@@ -1,4 +1,4 @@
-// use std::fs;
+use std::fs;
 use git2::Repository;
 use std::error::Error;
 
@@ -12,17 +12,43 @@ pub fn resolve(args: ClapperArgs) -> Result<(), Box<dyn Error>> {
     match args.entity_type {
         EntityType::Get(get_command) => {
             match get_command.command {
-                GetSubCommand::Dhjs(dir) => Repository::clone(GIT_DIAMOND_HARDHAT_JS_URL, &dir.dir_name)?,
-                GetSubCommand::Dhts(dir) => Repository::clone(GIT_DIAMOND_HARDHAT_TS_URL, &dir.dir_name)?,
-                GetSubCommand::Dfd(dir) => Repository::clone(GIT_DIAMOND_FOUNDRY_URL, &dir.dir_name)?,
-                GetSubCommand::Nestjs(dir) => Repository::clone(GIT_NEST_JS_URL, &dir.dir_name)?,
+                GetSubCommand::Dhjs(dir) => {
+                    match Repository::clone(GIT_DIAMOND_HARDHAT_JS_URL, &dir.dir_name) {
+                        Ok(_) => {
+                            println!("Successfully cloned project!");
+                            remove_git_dir(&dir.dir_name);
+                        },
+                        Err(e) => eprintln!("Failed to create the React project: {}", e),
+                    }
+                },
+                GetSubCommand::Dhts(dir) => {
+                    match Repository::clone(GIT_DIAMOND_HARDHAT_TS_URL, &dir.dir_name) {
+                        Ok(_) => {
+                            println!("Successfully cloned project!");
+                            remove_git_dir(&dir.dir_name);
+                        },
+                        Err(e) => eprintln!("Failed to create the React project: {}", e),
+                    }
+                },
+                GetSubCommand::Dfd(dir) => {
+                    match Repository::clone(GIT_DIAMOND_FOUNDRY_URL, &dir.dir_name) {
+                        Ok(_) => {
+                            println!("Successfully cloned project!");
+                            remove_git_dir(&dir.dir_name);
+                        },
+                        Err(e) => eprintln!("Failed to create the React project: {}", e),
+                    }
+                },
+                GetSubCommand::Nestjs(dir) => {
+                    match Repository::clone(GIT_NEST_JS_URL, &dir.dir_name){
+                        Ok(_) => {
+                            println!("Successfully cloned project!");
+                            remove_git_dir(&dir.dir_name);
+                        },
+                        Err(e) => eprintln!("Failed to create the React project: {}", e),
+                    }
+                },
             };
-
-            // let git_dir = format!("{}/.git", config.project_name);
-
-            // if fs::remove_dir_all(&git_dir).is_err() {
-            //     println!("Warning: Failed to remove .git directory");
-            // }
         },
         EntityType::Scaffold(scaffold_command) => {
             match scaffold_command.command {
@@ -81,4 +107,11 @@ pub fn resolve(args: ClapperArgs) -> Result<(), Box<dyn Error>> {
     }
 
     Ok(())
+}
+
+fn remove_git_dir(dir_name: &String) {
+    let git_dir = format!("{}/.git", dir_name);
+    if fs::remove_dir_all(&git_dir).is_err() {
+        println!("Warning: Failed to remove .git directory");
+    }
 }

@@ -8,7 +8,7 @@ pub struct ClapperArgs {
 }
 
 // ---------------
-// Valid Commands
+// Valid Commands: get | scaffold
 // ---------------
 #[derive(Debug, Subcommand)]
 pub enum EntityType {
