@@ -18,7 +18,7 @@ pub fn resolve(args: ClapperArgs) -> Result<(), Box<dyn Error>> {
                             println!("Successfully cloned project!");
                             remove_git_dir(&dir.dir_name);
                         },
-                        Err(e) => eprintln!("Failed to create the React project: {}", e),
+                        Err(e) => eprintln!("Failed to clone project: {}", e),
                     }
                 },
                 GetSubCommand::Dhts(dir) => {
@@ -27,7 +27,7 @@ pub fn resolve(args: ClapperArgs) -> Result<(), Box<dyn Error>> {
                             println!("Successfully cloned project!");
                             remove_git_dir(&dir.dir_name);
                         },
-                        Err(e) => eprintln!("Failed to create the React project: {}", e),
+                        Err(e) => eprintln!("Failed to clone project: {}", e),
                     }
                 },
                 GetSubCommand::Dfd(dir) => {
@@ -36,7 +36,7 @@ pub fn resolve(args: ClapperArgs) -> Result<(), Box<dyn Error>> {
                             println!("Successfully cloned project!");
                             remove_git_dir(&dir.dir_name);
                         },
-                        Err(e) => eprintln!("Failed to create the React project: {}", e),
+                        Err(e) => eprintln!("Failed to clone project: {}", e),
                     }
                 },
                 GetSubCommand::Nestjs(dir) => {
@@ -45,7 +45,7 @@ pub fn resolve(args: ClapperArgs) -> Result<(), Box<dyn Error>> {
                             println!("Successfully cloned project!");
                             remove_git_dir(&dir.dir_name);
                         },
-                        Err(e) => eprintln!("Failed to create the React project: {}", e),
+                        Err(e) => eprintln!("Failed to clone project: {}", e),
                     }
                 },
             };
@@ -105,6 +105,13 @@ pub fn resolve(args: ClapperArgs) -> Result<(), Box<dyn Error>> {
             }
         }
     }
+
+    println!(
+"
+---------------------------
+Success: Happy building !!!
+---------------------------
+");
 
     Ok(())
 }
