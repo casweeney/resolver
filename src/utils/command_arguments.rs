@@ -7,6 +7,9 @@ pub struct ClapperArgs {
     pub entity_type: EntityType,
 }
 
+// ---------------
+// Valid Commands
+// ---------------
 #[derive(Debug, Subcommand)]
 pub enum EntityType {
     /// Clones repositories
@@ -14,18 +17,14 @@ pub enum EntityType {
     Scaffold(ScaffoldCommand),
 }
 
+// ----------------
+// GetCommand Args
+// ----------------
 #[derive(Debug, Args)]
 pub struct GetCommand{
     #[clap(subcommand)]
     pub command: GetSubCommand,
 }
-
-#[derive(Debug, Args)]
-pub struct ScaffoldCommand{
-    #[clap(subcommand)]
-    pub command: ScaffoldSubCommand,
-}
-
 
 
 #[derive(Debug, Subcommand)]
@@ -34,6 +33,15 @@ pub enum GetSubCommand {
     Dhts(GetDir),
     Dfd(GetDir),
     Nestjs(GetDir)
+}
+
+// --------------------
+// ScaffoldCommand Args
+// --------------------
+#[derive(Debug, Args)]
+pub struct ScaffoldCommand{
+    #[clap(subcommand)]
+    pub command: ScaffoldSubCommand,
 }
 
 #[derive(Debug, Subcommand)]
@@ -46,6 +54,9 @@ pub enum ScaffoldSubCommand {
     Nextjs(GetDir),
 }
 
+// --------------------------------------
+// GetDir: For passing the directory name
+// --------------------------------------
 #[derive(Debug, Args)]
 pub struct GetDir {
     /// Specifies the name of the project directory to initialize

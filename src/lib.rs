@@ -5,7 +5,7 @@ use std::error::Error;
 pub mod utils;
 use utils::helpers::*;
 use utils::constants::*;
-pub use utils::arguments::*;
+pub use utils::command_arguments::*;
 
 
 pub fn resolve(args: ClapperArgs) -> Result<(), Box<dyn Error>> {
