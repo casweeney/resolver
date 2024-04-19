@@ -98,7 +98,6 @@ fn check_output(output: Result<Output, Error>) -> bool {
 }
 
 
-
 // -------------------
 // Scaffold functions
 // -------------------
