@@ -59,7 +59,7 @@ pub fn resolve(args: ClapperArgs) -> Result<(), Box<dyn Error>> {
                             Err(e) => eprintln!("Failed to create the React project: {}", e),
                         }
                     } else {
-                        println!("You don't have npm installed")
+                        return  Err("You don't have npm installed".into());
                     }
                 },
                 ScaffoldSubCommand::Reactts(dir) => {
@@ -68,6 +68,8 @@ pub fn resolve(args: ClapperArgs) -> Result<(), Box<dyn Error>> {
                             Ok(_) => println!("Successfully created the TypeScript React project!"),
                             Err(e) => eprintln!("Failed to create the TypeScript React project: {}", e),
                         }
+                    } else {
+                        return  Err("You don't have npm installed".into());
                     }
                 },
                 ScaffoldSubCommand::Hardhat(dir) => {
@@ -76,6 +78,8 @@ pub fn resolve(args: ClapperArgs) -> Result<(), Box<dyn Error>> {
                             Ok(_) => println!("Successfully created the Hardhat project!"),
                             Err(e) => eprintln!("Failed to create the Hardhat project: {}", e),
                         }
+                    } else {
+                        return  Err("You don't have npm installed".into());
                     }
                 },
                 ScaffoldSubCommand::Nestjs(dir) => {
@@ -84,6 +88,8 @@ pub fn resolve(args: ClapperArgs) -> Result<(), Box<dyn Error>> {
                             Ok(_) => println!("Successfully created the Nestjs project!"),
                             Err(e) => eprintln!("Failed to create the Nestjs project: {}", e),
                         }
+                    } else {
+                        return  Err("You don't have npm installed".into());
                     }
                 },
                 ScaffoldSubCommand::Laravel(dir) => {
@@ -92,6 +98,8 @@ pub fn resolve(args: ClapperArgs) -> Result<(), Box<dyn Error>> {
                             Ok(_) => println!("Successfully created the Laravel project!"),
                             Err(e) => eprintln!("Failed to create the Laravel project: {}", e),
                         }
+                    } else {
+                        return  Err("You don't have npm installed".into());
                     }
                 },
                 ScaffoldSubCommand::Nextjs(dir) => {
@@ -100,6 +108,8 @@ pub fn resolve(args: ClapperArgs) -> Result<(), Box<dyn Error>> {
                             Ok(_) => println!("Successfully created the Next application!"),
                             Err(e) => eprintln!("Failed to create the Next application: {}", e),
                         }
+                    } else {
+                        return  Err("You don't have npm installed".into());
                     }
                 }
             }
