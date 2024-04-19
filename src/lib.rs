@@ -125,7 +125,10 @@ pub fn resolve(args: ClapperArgs) -> Result<(), Box<dyn Error>> {
                     }
                 },
                 InstallSubCommand::Scarb => {
-
+                    match install_scarb() {
+                        Ok(_) => println!("Scarb installation successful!"),
+                        Err(e) => eprintln!("Failed to Install Scarb {}", e),
+                    }
                 }
             }
         }
