@@ -2,7 +2,6 @@ use std::fs;
 use std::io::Error;
 use std::process::{Command, Output};
 pub use std::io::Result as IOResult;
-use std::env::consts::OS;
 
 // -------------------
 // Checker functions
@@ -80,7 +79,9 @@ pub fn is_choco_installed() -> bool {
 }
 
 pub fn get_os() -> String {
-    OS.to_string()
+    let os_family = std::env::consts::OS;
+
+    os_family.to_string()
 }
 
 fn check_output(output: Result<Output, Error>) -> bool {
@@ -213,10 +214,13 @@ pub fn install_choco() -> IOResult<()> {
 }
 
 pub fn install_node() -> IOResult<()> {
-    match get_os().as_str() {
-        MACOS => install_node_macos(),
-        WINDOWS => install_node_windows(),
-        LINUX => install_node_linux(),
+    // let os_family = std::env::consts::OS;
+    
+    let os_family = get_os();
+    match os_family.as_str() {
+        "linux" => install_node_linux(),
+        "windows" => install_node_windows(),
+        "macos" => install_node_macos(),
         _ => panic!("Unsupported OS")
     }
 }
