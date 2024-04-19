@@ -174,7 +174,7 @@ pub fn install_brew() -> IOResult<()> {
     let script_url = "https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh";
     let command = format!("curl -fsSL {} | /bin/bash", script_url);
 
-    let output = Command::new("sh")
+    Command::new("sh")
         .arg("-c")
         .arg(command)
         .output()?;
