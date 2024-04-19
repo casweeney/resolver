@@ -16,6 +16,8 @@ pub enum EntityType {
     Get(GetCommand),
     /// Scaffolds projects for any development tool
     Scaffold(ScaffoldCommand),
+    /// Installs dependencies and software development tools
+    Install(InstallCommand),
 }
 
 // ----------------
@@ -63,6 +65,27 @@ pub enum ScaffoldSubCommand {
     Laravel(GetDir),
     /// Scaffolds a Next project
     Nextjs(GetDir),
+}
+
+// ----------------
+// InstallCommand Args
+// ----------------
+#[derive(Debug, Args)]
+pub struct InstallCommand{
+    #[clap(subcommand)]
+    pub command: InstallSubCommand,
+}
+
+#[derive(Debug, Subcommand)]
+pub enum InstallSubCommand {
+    /// Installs Homebrew
+    Brew,
+    /// Installs Chocolatey
+    Choco,
+    /// Installs Node.js
+    Node,
+    /// Installs Scarb
+    Scarb,
 }
 
 // --------------------------------------
