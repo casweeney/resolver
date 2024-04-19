@@ -1,6 +1,7 @@
 use std::fs;
 use git2::Repository;
 use std::error::Error;
+use colored::*;
 
 pub mod utils;
 use utils::helpers::*;
@@ -15,37 +16,45 @@ pub fn resolve(args: ClapperArgs) -> Result<(), Box<dyn Error>> {
                 GetSubCommand::Dhjs(dir) => {
                     match Repository::clone(GIT_DIAMOND_HARDHAT_JS_URL, &dir.dir_name) {
                         Ok(_) => {
-                            println!("Successfully cloned project!");
+                            println!("{}", "Successfully cloned diamond standard hardhat JS project!".bright_blue());
                             remove_git_dir(&dir.dir_name);
                         },
-                        Err(e) => eprintln!("Failed to clone project: {}", e),
+                        Err(e) => {
+                            return Err(format!("Failed to clone project: {}", e).into())
+                        }
                     }
                 },
                 GetSubCommand::Dhts(dir) => {
                     match Repository::clone(GIT_DIAMOND_HARDHAT_TS_URL, &dir.dir_name) {
                         Ok(_) => {
-                            println!("Successfully cloned project!");
+                            println!("{}", "Successfully cloned diamond standard hardhat TS project!".bright_blue());
                             remove_git_dir(&dir.dir_name);
                         },
-                        Err(e) => eprintln!("Failed to clone project: {}", e),
+                        Err(e) => {
+                            return Err(format!("Failed to clone project: {}", e).into())
+                        }
                     }
                 },
                 GetSubCommand::Dfd(dir) => {
                     match Repository::clone(GIT_DIAMOND_FOUNDRY_URL, &dir.dir_name) {
                         Ok(_) => {
-                            println!("Successfully cloned project!");
+                            println!("{}", "Successfully cloned diamond standard foundry project!".bright_blue());
                             remove_git_dir(&dir.dir_name);
                         },
-                        Err(e) => eprintln!("Failed to clone project: {}", e),
+                        Err(e) => {
+                            return Err(format!("Failed to clone project: {}", e).into())
+                        }
                     }
                 },
                 GetSubCommand::Nestjs(dir) => {
                     match Repository::clone(GIT_NEST_JS_URL, &dir.dir_name){
                         Ok(_) => {
-                            println!("Successfully cloned project!");
+                            println!("{}", "Successfully cloned a NestJS project!".bright_blue());
                             remove_git_dir(&dir.dir_name);
                         },
-                        Err(e) => eprintln!("Failed to clone project: {}", e),
+                        Err(e) => {
+                            return Err(format!("Failed to clone project: {}", e).into())
+                        }
                     }
                 },
             };
@@ -54,38 +63,50 @@ pub fn resolve(args: ClapperArgs) -> Result<(), Box<dyn Error>> {
             match scaffold_command.command {
                 ScaffoldSubCommand::Reactjs(dir) => {
                     match create_react_app(dir.dir_name.clone()) {
-                        Ok(_) => println!("Successfully created the React project!"),
-                        Err(e) => eprintln!("Failed to create the React project: {}", e),
+                        Ok(_) => println!("{}", "Successfully created the React project!".bright_blue()),
+                        Err(e) => {
+                            return  Err(e);
+                        }
                     }
                 },
                 ScaffoldSubCommand::Reactts(dir) => {
                     match create_react_app_with_typescript(dir.dir_name.clone()) {
-                        Ok(_) => println!("Successfully created the TypeScript React project!"),
-                        Err(e) => eprintln!("Failed to create the TypeScript React project: {}", e),
+                        Ok(_) => println!("{}", "Successfully created the TypeScript React project!".bright_blue()),
+                        Err(e) => {
+                            return  Err(e);
+                        }
                     }
                 },
                 ScaffoldSubCommand::Hardhat(dir) => {
                     match create_hardhat_project(dir.dir_name.clone()) {
-                        Ok(_) => println!("Successfully created the Hardhat project!"),
-                        Err(e) => eprintln!("Failed to create the Hardhat project: {}", e),
+                        Ok(_) => println!("{}", "Successfully created the Hardhat project!".bright_blue()),
+                        Err(e) => {
+                            return  Err(e);
+                        }
                     }
                 },
                 ScaffoldSubCommand::Nestjs(dir) => {
                     match create_nestjs_app(dir.dir_name.clone()) {
-                        Ok(_) => println!("Successfully created the Nestjs project!"),
-                        Err(e) => eprintln!("Failed to create the Nestjs project: {}", e),
+                        Ok(_) => println!("{}", "Successfully created the Nestjs project!".bright_blue()),
+                        Err(e) => {
+                            return  Err(e);
+                        }
                     }
                 },
                 ScaffoldSubCommand::Laravel(dir) => {
                     match create_laravel_project(dir.dir_name.clone()) {
-                        Ok(_) => println!("Successfully created the Laravel project!"),
-                        Err(e) => eprintln!("Failed to create the Laravel project: {}", e),
+                        Ok(_) => println!("{}", "Successfully created the Laravel project!".bright_blue()),
+                        Err(e) => {
+                            return  Err(e);
+                        }
                     }
                 },
                 ScaffoldSubCommand::Nextjs(dir) => {
                     match create_next_app(dir.dir_name.clone()) {
-                        Ok(_) => println!("Successfully created the Next application!"),
-                        Err(e) => eprintln!("Failed to create the Next application: {}", e),
+                        Ok(_) => println!("{}", "Successfully created the Next application!".bright_blue()),
+                        Err(e) => {
+                            return  Err(e);
+                        }
                     }
                 }
             }
@@ -94,38 +115,39 @@ pub fn resolve(args: ClapperArgs) -> Result<(), Box<dyn Error>> {
             match install_command.command {
                 InstallSubCommand::Brew => {
                     match install_brew() {
-                        Ok(_) => println!("Homebrew installation successful!"),
-                        Err(e) => eprintln!("Failed to Install Homebrew: {}", e),
+                        Ok(_) => println!("{}", "Homebrew installation successful!".bright_blue()),
+                        Err(e) => {
+                            return  Err(e);
+                        }
                     }
                 },
                 InstallSubCommand::Choco => {
                     match install_choco() {
-                        Ok(_) => println!("Chocolatey installation successful!"),
-                        Err(e) => eprintln!("Failed to Install Choco: {}", e),
+                        Ok(_) => println!("{}", "Chocolatey installation successful!".bright_blue()),
+                        Err(e) => {
+                            return  Err(e);
+                        }
                     }
                 },
                 InstallSubCommand::Node => {
                     match install_node() {
-                        Ok(_) => println!("Node.js installation successful!"),
-                        Err(e) => eprintln!("Failed to Install Node.js: {}", e),
+                        Ok(_) => println!("{}", "Node.js installation successful!".bright_blue()),
+                        Err(e) => {
+                            return  Err(e);
+                        }
                     }
                 },
                 InstallSubCommand::Scarb => {
                     match install_scarb() {
-                        Ok(_) => println!("Scarb installation successful!"),
-                        Err(e) => eprintln!("Failed to Install Scarb: {}", e),
+                        Ok(_) => println!("{}", "Scarb installation successful!".bright_blue()),
+                        Err(e) => {
+                            return  Err(e);
+                        }
                     }
                 }
             }
         }
     }
-
-    println!(
-"
----------------------------
-Success: Happy building !!!
----------------------------
-");
 
     Ok(())
 }

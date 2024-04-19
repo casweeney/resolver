@@ -1,14 +1,23 @@
 use resolver::resolve;
 use resolver::ClapperArgs;
 use clap::Parser;
+use colored::*;
 
 fn main() {
     let args: ClapperArgs = ClapperArgs::parse();
 
     match resolve(args) {
-        Ok(cfg) => cfg,
+        Ok(cfg) => {
+            println!("{}", 
+"---------------------------
+Success: Happy building !!!
+---------------------------"
+.green().bold()
+            );
+            cfg
+        },
         Err(e) => {
-            eprintln!("Error: resolver failed: {}", e);
+            eprintln!("{}", format!("Error: resolver failed: {}", e).red().bold().underline());
             return;
         }
     };
