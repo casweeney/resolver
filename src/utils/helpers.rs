@@ -4,7 +4,6 @@ use std::process::{Command, Output};
 pub use std::io::Result as IOResult;
 use std::env::consts::OS;
 
-use crate::{LINUX, WINDOWS};
 // -------------------
 // Checker functions
 // -------------------
@@ -215,15 +214,9 @@ pub fn install_choco() -> IOResult<()> {
 
 pub fn install_node() -> IOResult<()> {
     match get_os().as_str() {
-        MACOS => {
-            install_node_macos()
-        },
-        WINDOWS => {
-            install_node_windows()
-        },
-        LINUX => {
-            install_node_linux()
-        },
+        MACOS => install_node_macos(),
+        WINDOWS => install_node_windows(),
+        LINUX => install_node_linux(),
         _ => panic!("Unsupported OS")
     }
 }
