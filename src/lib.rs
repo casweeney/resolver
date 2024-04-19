@@ -55,37 +55,49 @@ pub fn resolve(args: ClapperArgs) -> Result<(), Box<dyn Error>> {
                 ScaffoldSubCommand::Reactjs(dir) => {
                     match create_react_app(dir.dir_name.clone()) {
                         Ok(_) => println!("Successfully created the React project!"),
-                        Err(e) => eprintln!("Failed to create the React project: {}", e),
+                        Err(e) => {
+                            return  Err(e);
+                        }
                     }
                 },
                 ScaffoldSubCommand::Reactts(dir) => {
                     match create_react_app_with_typescript(dir.dir_name.clone()) {
                         Ok(_) => println!("Successfully created the TypeScript React project!"),
-                        Err(e) => eprintln!("Failed to create the TypeScript React project: {}", e),
+                        Err(e) => {
+                            return  Err(e);
+                        }
                     }
                 },
                 ScaffoldSubCommand::Hardhat(dir) => {
                     match create_hardhat_project(dir.dir_name.clone()) {
                         Ok(_) => println!("Successfully created the Hardhat project!"),
-                        Err(e) => eprintln!("Failed to create the Hardhat project: {}", e),
+                        Err(e) => {
+                            return  Err(e);
+                        }
                     }
                 },
                 ScaffoldSubCommand::Nestjs(dir) => {
                     match create_nestjs_app(dir.dir_name.clone()) {
                         Ok(_) => println!("Successfully created the Nestjs project!"),
-                        Err(e) => eprintln!("Failed to create the Nestjs project: {}", e),
+                        Err(e) => {
+                            return  Err(e);
+                        }
                     }
                 },
                 ScaffoldSubCommand::Laravel(dir) => {
                     match create_laravel_project(dir.dir_name.clone()) {
                         Ok(_) => println!("Successfully created the Laravel project!"),
-                        Err(e) => eprintln!("Failed to create the Laravel project: {}", e),
+                        Err(e) => {
+                            return  Err(e);
+                        }
                     }
                 },
                 ScaffoldSubCommand::Nextjs(dir) => {
                     match create_next_app(dir.dir_name.clone()) {
                         Ok(_) => println!("Successfully created the Next application!"),
-                        Err(e) => eprintln!("Failed to create the Next application: {}", e),
+                        Err(e) => {
+                            return  Err(e);
+                        }
                     }
                 }
             }
@@ -95,37 +107,38 @@ pub fn resolve(args: ClapperArgs) -> Result<(), Box<dyn Error>> {
                 InstallSubCommand::Brew => {
                     match install_brew() {
                         Ok(_) => println!("Homebrew installation successful!"),
-                        Err(e) => eprintln!("Failed to Install Homebrew: {}", e),
+                        Err(e) => {
+                            return  Err(e);
+                        }
                     }
                 },
                 InstallSubCommand::Choco => {
                     match install_choco() {
                         Ok(_) => println!("Chocolatey installation successful!"),
-                        Err(e) => eprintln!("Failed to Install Choco: {}", e),
+                        Err(e) => {
+                            return  Err(e);
+                        }
                     }
                 },
                 InstallSubCommand::Node => {
                     match install_node() {
                         Ok(_) => println!("Node.js installation successful!"),
-                        Err(e) => eprintln!("Failed to Install Node.js: {}", e),
+                        Err(e) => {
+                            return  Err(e);
+                        }
                     }
                 },
                 InstallSubCommand::Scarb => {
                     match install_scarb() {
                         Ok(_) => println!("Scarb installation successful!"),
-                        Err(e) => eprintln!("Failed to Install Scarb: {}", e),
+                        Err(e) => {
+                            return  Err(e);
+                        }
                     }
                 }
             }
         }
     }
-
-    println!(
-"
----------------------------
-Success: Happy building !!!
----------------------------
-");
 
     Ok(())
 }
