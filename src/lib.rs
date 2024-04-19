@@ -53,63 +53,39 @@ pub fn resolve(args: ClapperArgs) -> Result<(), Box<dyn Error>> {
         EntityType::Scaffold(scaffold_command) => {
             match scaffold_command.command {
                 ScaffoldSubCommand::Reactjs(dir) => {
-                    if is_npm_installed() {
-                        match create_react_app(dir.dir_name.clone()) {
-                            Ok(_) => println!("Successfully created the React project!"),
-                            Err(e) => eprintln!("Failed to create the React project: {}", e),
-                        }
-                    } else {
-                        return  Err("You don't have npm installed".into());
+                    match create_react_app(dir.dir_name.clone()) {
+                        Ok(_) => println!("Successfully created the React project!"),
+                        Err(e) => eprintln!("Failed to create the React project: {}", e),
                     }
                 },
                 ScaffoldSubCommand::Reactts(dir) => {
-                    if is_npm_installed() {
-                        match create_react_app_with_typescript(dir.dir_name.clone()) {
-                            Ok(_) => println!("Successfully created the TypeScript React project!"),
-                            Err(e) => eprintln!("Failed to create the TypeScript React project: {}", e),
-                        }
-                    } else {
-                        return  Err("You don't have npm installed".into());
+                    match create_react_app_with_typescript(dir.dir_name.clone()) {
+                        Ok(_) => println!("Successfully created the TypeScript React project!"),
+                        Err(e) => eprintln!("Failed to create the TypeScript React project: {}", e),
                     }
                 },
                 ScaffoldSubCommand::Hardhat(dir) => {
-                    if is_npm_installed() {
-                        match create_hardhat_project(dir.dir_name.clone()) {
-                            Ok(_) => println!("Successfully created the Hardhat project!"),
-                            Err(e) => eprintln!("Failed to create the Hardhat project: {}", e),
-                        }
-                    } else {
-                        return  Err("You don't have npm installed".into());
+                    match create_hardhat_project(dir.dir_name.clone()) {
+                        Ok(_) => println!("Successfully created the Hardhat project!"),
+                        Err(e) => eprintln!("Failed to create the Hardhat project: {}", e),
                     }
                 },
                 ScaffoldSubCommand::Nestjs(dir) => {
-                    if is_npm_installed() {
-                        match create_nestjs_app(dir.dir_name.clone()) {
-                            Ok(_) => println!("Successfully created the Nestjs project!"),
-                            Err(e) => eprintln!("Failed to create the Nestjs project: {}", e),
-                        }
-                    } else {
-                        return  Err("You don't have npm installed".into());
+                    match create_nestjs_app(dir.dir_name.clone()) {
+                        Ok(_) => println!("Successfully created the Nestjs project!"),
+                        Err(e) => eprintln!("Failed to create the Nestjs project: {}", e),
                     }
                 },
                 ScaffoldSubCommand::Laravel(dir) => {
-                    if is_php_installed() && is_laravel_installed() {
-                        match create_laravel_project(dir.dir_name.clone()) {
-                            Ok(_) => println!("Successfully created the Laravel project!"),
-                            Err(e) => eprintln!("Failed to create the Laravel project: {}", e),
-                        }
-                    } else {
-                        return  Err("You don't have npm installed".into());
+                    match create_laravel_project(dir.dir_name.clone()) {
+                        Ok(_) => println!("Successfully created the Laravel project!"),
+                        Err(e) => eprintln!("Failed to create the Laravel project: {}", e),
                     }
                 },
                 ScaffoldSubCommand::Nextjs(dir) => {
-                    if is_npm_installed() {
-                        match create_next_app(dir.dir_name.clone()) {
-                            Ok(_) => println!("Successfully created the Next application!"),
-                            Err(e) => eprintln!("Failed to create the Next application: {}", e),
-                        }
-                    } else {
-                        return  Err("You don't have npm installed".into());
+                    match create_next_app(dir.dir_name.clone()) {
+                        Ok(_) => println!("Successfully created the Next application!"),
+                        Err(e) => eprintln!("Failed to create the Next application: {}", e),
                     }
                 }
             }
@@ -119,25 +95,25 @@ pub fn resolve(args: ClapperArgs) -> Result<(), Box<dyn Error>> {
                 InstallSubCommand::Brew => {
                     match install_brew() {
                         Ok(_) => println!("Homebrew installation successful!"),
-                        Err(e) => eprintln!("Failed to Install Homebrew {}", e),
+                        Err(e) => eprintln!("Failed to Install Homebrew: {}", e),
                     }
                 },
                 InstallSubCommand::Choco => {
                     match install_choco() {
                         Ok(_) => println!("Chocolatey installation successful!"),
-                        Err(e) => eprintln!("Failed to Install Chocolatey {}", e),
+                        Err(e) => eprintln!("Failed to Install Choco: {}", e),
                     }
                 },
                 InstallSubCommand::Node => {
                     match install_node() {
                         Ok(_) => println!("Node.js installation successful!"),
-                        Err(e) => eprintln!("Failed to Install Node.js {}", e),
+                        Err(e) => eprintln!("Failed to Install Node.js: {}", e),
                     }
                 },
                 InstallSubCommand::Scarb => {
                     match install_scarb() {
                         Ok(_) => println!("Scarb installation successful!"),
-                        Err(e) => eprintln!("Failed to Install Scarb {}", e),
+                        Err(e) => eprintln!("Failed to Install Scarb: {}", e),
                     }
                 }
             }

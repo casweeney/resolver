@@ -1,7 +1,7 @@
 use std::fs;
-use std::io::Error;
+use std::io::Error as OutputError;
 use std::process::{Command, Output};
-pub use std::io::Result as IOResult;
+use std::error::Error;
 
 // -------------------
 // Checker functions
@@ -38,7 +38,7 @@ pub fn is_php_installed() -> bool {
     check_output(output)
 }
 
-pub fn is_laravel_installed() -> bool {
+pub fn is_composer_installed() -> bool {
     let output = Command::new("composer")
         .arg("--version")
         .output();
@@ -84,7 +84,7 @@ pub fn get_os() -> String {
     os_family.to_string()
 }
 
-fn check_output(output: Result<Output, Error>) -> bool {
+fn check_output(output: Result<Output, OutputError>) -> bool {
     match output {
         Ok(output) => {
             if output.status.success() {
@@ -101,44 +101,60 @@ fn check_output(output: Result<Output, Error>) -> bool {
 // -------------------
 // Scaffold functions
 // -------------------
-pub fn create_react_app(project_name: String) -> IOResult<()> {
-    Command::new("npx")
-        .args(["create-react-app", project_name.as_str()])
-        .spawn()?
-        .wait()?;
+pub fn create_react_app(project_name: String) -> Result<(), Box<dyn Error>> {
+    if !is_npm_installed() {
+        return  Err("You don't have npm installed".into());
+    } else {
+        Command::new("npx")
+            .args(["create-react-app", project_name.as_str()])
+            .spawn()?
+            .wait()?;
 
-    Ok(())
+        Ok(())
+    }
 }
 
-pub fn create_react_app_with_typescript(project_name: String) -> IOResult<()> {
-    Command::new("npx")
-        .args(["create-react-app", project_name.as_str(), "--template", "typescript"])
-        .spawn()?
-        .wait()?;
+pub fn create_react_app_with_typescript(project_name: String) -> Result<(), Box<dyn Error>> {
+    if !is_npm_installed() {
+        return  Err("You don't have npm installed".into());
+    } else {
+        Command::new("npx")
+            .args(["create-react-app", project_name.as_str(), "--template", "typescript"])
+            .spawn()?
+            .wait()?;
 
-    Ok(())
+        Ok(())
+    }
 }
 
-pub fn create_hardhat_project(project_name: String) -> IOResult<()> {
-    fs::create_dir_all(project_name.as_str())?;
+pub fn create_hardhat_project(project_name: String) -> Result<(), Box<dyn Error>> {
+    if !is_npm_installed() {
+        return  Err("You don't have npm installed".into());
+    } else {
+        fs::create_dir_all(project_name.as_str())?;
 
-    Command::new("npm")
-        .args(["init", "--yes"])
-        .current_dir(project_name.as_str())
-        .spawn()?
-        .wait()?;
+        Command::new("npm")
+            .args(["init", "--yes"])
+            .current_dir(project_name.as_str())
+            .spawn()?
+            .wait()?;
 
-    Command::new("npx")
-        .args(["hardhat", "init"])
-        .current_dir(project_name.as_str())
-        .spawn()?
-        .wait()?;
+        Command::new("npx")
+            .args(["hardhat", "init"])
+            .current_dir(project_name.as_str())
+            .spawn()?
+            .wait()?;
 
-    Ok(())
+        Ok(())
+    }
 }
 
-pub fn create_nestjs_app(project_name: String) -> IOResult<()> {
+pub fn create_nestjs_app(project_name: String) -> Result<(), Box<dyn Error>> {
     if !is_nestjs_installed() {
+        if !is_npm_installed() {
+            return  Err("You don't have npm installed".into());
+        }
+
         Command::new("npm")
             .args(["i", "-g", "@nestjs/cli"])
             .spawn()?
@@ -153,32 +169,42 @@ pub fn create_nestjs_app(project_name: String) -> IOResult<()> {
     Ok(())
 }
 
-pub fn create_laravel_project(project_name: String) -> IOResult<()> {
-    println!("Creating Laravel project: {}", project_name);
+pub fn create_laravel_project(project_name: String) -> Result<(), Box<dyn Error>> {
+    if !is_php_installed() && !is_composer_installed() {
+        return  Err("You don't have PHP or Composer installed".into());
+    } else {
+        println!("Creating Laravel project: {}", project_name);
 
-    Command::new("composer")
-        .args(["create-project", "laravel/laravel", project_name.as_str()])
-        .spawn()?
-        .wait()?;
+        Command::new("composer")
+            .args(["create-project", "laravel/laravel", project_name.as_str()])
+            .spawn()?
+            .wait()?;
 
-    Ok(())
+        Ok(())
+    }
 }
 
-pub fn create_next_app(project_name: String) -> IOResult<()> {
-    Command::new("npx")
-        .args(["create-next-app@latest", project_name.as_str()])
-        .spawn()?
-        .wait()?;
+pub fn create_next_app(project_name: String) -> Result<(), Box<dyn Error>> {
+    if !is_npm_installed() {
+        return  Err("You don't have npm installed".into());
+    } else {
+        Command::new("npx")
+            .args(["create-next-app@latest", project_name.as_str()])
+            .spawn()?
+            .wait()?;
 
-    Ok(())
+        Ok(())
+    }
 }
 
 // -------------------
 // Installer functions
 // -------------------
 
-pub fn install_brew() -> IOResult<()> {
-    if !is_brew_installed() {
+pub fn install_brew() -> Result<(), Box<dyn Error>> {
+    if is_brew_installed() {
+        return  Err("Brew is already installed!".into());
+    } else {
         println!("Installing Homebrew...");
 
         let script_url = "https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh";
@@ -188,44 +214,49 @@ pub fn install_brew() -> IOResult<()> {
             .arg("-c")
             .arg(command)
             .output()?;
+
+        Ok(())
+    }
+}
+
+pub fn install_choco() -> Result<(), Box<dyn Error>> {
+    if is_choco_installed() {
+        return  Err("Chocolatey is already installed!".into());
     } else {
-        println!("Brew is already installed!");
-    }
+        println!("Installing Chocolatey");
 
-    Ok(())
-}
+        let powershell_script = r#"
+            Set-ExecutionPolicy Bypass -Scope Process -Force;
+            [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072;
+            iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
+        "#;
 
-pub fn install_choco() -> IOResult<()> {
-    println!("Installing Chocolatey");
+        Command::new("powershell")
+            .arg("-Command")
+            .arg(powershell_script)
+            .output()?;
 
-    let powershell_script = r#"
-        Set-ExecutionPolicy Bypass -Scope Process -Force;
-        [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072;
-        iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
-    "#;
-
-    Command::new("powershell")
-        .arg("-Command")
-        .arg(powershell_script)
-        .output()?;
-
-
-    Ok(())
-}
-
-pub fn install_node() -> IOResult<()> {
-    // let os_family = std::env::consts::OS;
-    
-    let os_family = get_os();
-    match os_family.as_str() {
-        "linux" => install_node_linux(),
-        "windows" => install_node_windows(),
-        "macos" => install_node_macos(),
-        _ => panic!("Unsupported OS")
+        Ok(())
     }
 }
 
-pub fn install_node_linux() -> IOResult<()> {
+pub fn install_node() -> Result<(), Box<dyn Error>> {
+    if is_node_installed() {
+        return  Err("Node is already installed!".into());
+    } else {
+        // let os_family = std::env::consts::OS;
+        let os_family = get_os();
+
+        match os_family.as_str() {
+            "linux" => install_node_linux(),
+            "windows" => install_node_windows(),
+            "macos" => install_node_macos(),
+            _ => panic!("Unsupported OS")
+        }
+    }
+}
+
+pub fn install_node_linux() -> Result<(), Box<dyn Error>> {
     println!("Installing Node.js on Linux...");
 
     Command::new("sudo")
@@ -241,7 +272,7 @@ pub fn install_node_linux() -> IOResult<()> {
     Ok(())
 }
 
-pub fn install_node_macos() -> IOResult<()> {
+pub fn install_node_macos() -> Result<(), Box<dyn Error>> {
     println!("Installing Node.js on macOS...");
 
     if is_brew_installed() {
@@ -253,7 +284,7 @@ pub fn install_node_macos() -> IOResult<()> {
     Ok(())
 }
 
-pub fn install_node_windows() -> IOResult<()> {
+pub fn install_node_windows() -> Result<(), Box<dyn Error>> {
     println!("Installing Node.js on Windows...");
 
     if is_choco_installed() {
@@ -265,15 +296,19 @@ pub fn install_node_windows() -> IOResult<()> {
     Ok(())
 }
 
-pub fn install_scarb() -> IOResult<()> {
-    let install_cmd = "curl --proto '=https' --tlsv1.2 -sSf https://docs.swmansion.com/scarb/install.sh | sh";
+pub fn install_scarb() -> Result<(), Box<dyn Error>> {
+    if is_scarb_installed() {
+        return  Err("Scarb is already installed!".into());
+    } else {
+        let install_cmd = "curl --proto '=https' --tlsv1.2 -sSf https://docs.swmansion.com/scarb/install.sh | sh";
 
-    Command::new("sh")
-        .arg("-c")
-        .arg(install_cmd)
-        .output()?;
+        Command::new("sh")
+            .arg("-c")
+            .arg(install_cmd)
+            .output()?;
 
-    Ok(())
+        Ok(())
+    }
 }
 
 pub fn install_starkli() {}
