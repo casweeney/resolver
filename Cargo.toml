@@ -10,3 +10,4 @@ readme = "README.md"
 [dependencies]
 git2 = "0.18.3"
 clap = { version = "4.2.7", features = ["derive"] }
+colored = "2.0"

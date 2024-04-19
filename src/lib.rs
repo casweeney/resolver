@@ -1,6 +1,7 @@
 use std::fs;
 use git2::Repository;
 use std::error::Error;
+use colored::*;
 
 pub mod utils;
 use utils::helpers::*;
@@ -15,37 +16,45 @@ pub fn resolve(args: ClapperArgs) -> Result<(), Box<dyn Error>> {
                 GetSubCommand::Dhjs(dir) => {
                     match Repository::clone(GIT_DIAMOND_HARDHAT_JS_URL, &dir.dir_name) {
                         Ok(_) => {
-                            println!("Successfully cloned project!");
+                            println!("{}", "Successfully cloned diamond standard hardhat JS project!".bright_blue());
                             remove_git_dir(&dir.dir_name);
                         },
-                        Err(e) => eprintln!("Failed to clone project: {}", e),
+                        Err(e) => {
+                            return Err(format!("Failed to clone project: {}", e).into())
+                        }
                     }
                 },
                 GetSubCommand::Dhts(dir) => {
                     match Repository::clone(GIT_DIAMOND_HARDHAT_TS_URL, &dir.dir_name) {
                         Ok(_) => {
-                            println!("Successfully cloned project!");
+                            println!("{}", "Successfully cloned diamond standard hardhat TS project!".bright_blue());
                             remove_git_dir(&dir.dir_name);
                         },
-                        Err(e) => eprintln!("Failed to clone project: {}", e),
+                        Err(e) => {
+                            return Err(format!("Failed to clone project: {}", e).into())
+                        }
                     }
                 },
                 GetSubCommand::Dfd(dir) => {
                     match Repository::clone(GIT_DIAMOND_FOUNDRY_URL, &dir.dir_name) {
                         Ok(_) => {
-                            println!("Successfully cloned project!");
+                            println!("{}", "Successfully cloned diamond standard foundry project!".bright_blue());
                             remove_git_dir(&dir.dir_name);
                         },
-                        Err(e) => eprintln!("Failed to clone project: {}", e),
+                        Err(e) => {
+                            return Err(format!("Failed to clone project: {}", e).into())
+                        }
                     }
                 },
                 GetSubCommand::Nestjs(dir) => {
                     match Repository::clone(GIT_NEST_JS_URL, &dir.dir_name){
                         Ok(_) => {
-                            println!("Successfully cloned project!");
+                            println!("{}", "Successfully cloned a NestJS project!".bright_blue());
                             remove_git_dir(&dir.dir_name);
                         },
-                        Err(e) => eprintln!("Failed to clone project: {}", e),
+                        Err(e) => {
+                            return Err(format!("Failed to clone project: {}", e).into())
+                        }
                     }
                 },
             };
@@ -54,7 +63,7 @@ pub fn resolve(args: ClapperArgs) -> Result<(), Box<dyn Error>> {
             match scaffold_command.command {
                 ScaffoldSubCommand::Reactjs(dir) => {
                     match create_react_app(dir.dir_name.clone()) {
-                        Ok(_) => println!("Successfully created the React project!"),
+                        Ok(_) => println!("{}", "Successfully created the React project!".bright_blue()),
                         Err(e) => {
                             return  Err(e);
                         }
@@ -62,7 +71,7 @@ pub fn resolve(args: ClapperArgs) -> Result<(), Box<dyn Error>> {
                 },
                 ScaffoldSubCommand::Reactts(dir) => {
                     match create_react_app_with_typescript(dir.dir_name.clone()) {
-                        Ok(_) => println!("Successfully created the TypeScript React project!"),
+                        Ok(_) => println!("{}", "Successfully created the TypeScript React project!".bright_blue()),
                         Err(e) => {
                             return  Err(e);
                         }
@@ -70,7 +79,7 @@ pub fn resolve(args: ClapperArgs) -> Result<(), Box<dyn Error>> {
                 },
                 ScaffoldSubCommand::Hardhat(dir) => {
                     match create_hardhat_project(dir.dir_name.clone()) {
-                        Ok(_) => println!("Successfully created the Hardhat project!"),
+                        Ok(_) => println!("{}", "Successfully created the Hardhat project!".bright_blue()),
                         Err(e) => {
                             return  Err(e);
                         }
@@ -78,7 +87,7 @@ pub fn resolve(args: ClapperArgs) -> Result<(), Box<dyn Error>> {
                 },
                 ScaffoldSubCommand::Nestjs(dir) => {
                     match create_nestjs_app(dir.dir_name.clone()) {
-                        Ok(_) => println!("Successfully created the Nestjs project!"),
+                        Ok(_) => println!("{}", "Successfully created the Nestjs project!".bright_blue()),
                         Err(e) => {
                             return  Err(e);
                         }
@@ -86,7 +95,7 @@ pub fn resolve(args: ClapperArgs) -> Result<(), Box<dyn Error>> {
                 },
                 ScaffoldSubCommand::Laravel(dir) => {
                     match create_laravel_project(dir.dir_name.clone()) {
-                        Ok(_) => println!("Successfully created the Laravel project!"),
+                        Ok(_) => println!("{}", "Successfully created the Laravel project!".bright_blue()),
                         Err(e) => {
                             return  Err(e);
                         }
@@ -94,7 +103,7 @@ pub fn resolve(args: ClapperArgs) -> Result<(), Box<dyn Error>> {
                 },
                 ScaffoldSubCommand::Nextjs(dir) => {
                     match create_next_app(dir.dir_name.clone()) {
-                        Ok(_) => println!("Successfully created the Next application!"),
+                        Ok(_) => println!("{}", "Successfully created the Next application!".bright_blue()),
                         Err(e) => {
                             return  Err(e);
                         }
@@ -106,7 +115,7 @@ pub fn resolve(args: ClapperArgs) -> Result<(), Box<dyn Error>> {
             match install_command.command {
                 InstallSubCommand::Brew => {
                     match install_brew() {
-                        Ok(_) => println!("Homebrew installation successful!"),
+                        Ok(_) => println!("{}", "Homebrew installation successful!".bright_blue()),
                         Err(e) => {
                             return  Err(e);
                         }
@@ -114,7 +123,7 @@ pub fn resolve(args: ClapperArgs) -> Result<(), Box<dyn Error>> {
                 },
                 InstallSubCommand::Choco => {
                     match install_choco() {
-                        Ok(_) => println!("Chocolatey installation successful!"),
+                        Ok(_) => println!("{}", "Chocolatey installation successful!".bright_blue()),
                         Err(e) => {
                             return  Err(e);
                         }
@@ -122,7 +131,7 @@ pub fn resolve(args: ClapperArgs) -> Result<(), Box<dyn Error>> {
                 },
                 InstallSubCommand::Node => {
                     match install_node() {
-                        Ok(_) => println!("Node.js installation successful!"),
+                        Ok(_) => println!("{}", "Node.js installation successful!".bright_blue()),
                         Err(e) => {
                             return  Err(e);
                         }
@@ -130,7 +139,7 @@ pub fn resolve(args: ClapperArgs) -> Result<(), Box<dyn Error>> {
                 },
                 InstallSubCommand::Scarb => {
                     match install_scarb() {
-                        Ok(_) => println!("Scarb installation successful!"),
+                        Ok(_) => println!("{}", "Scarb installation successful!".bright_blue()),
                         Err(e) => {
                             return  Err(e);
                         }
