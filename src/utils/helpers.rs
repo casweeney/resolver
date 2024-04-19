@@ -3,9 +3,19 @@ use std::io::Error;
 use std::process::{Command, Output};
 pub use std::io::Result as IOResult;
 use std::env::consts::OS;
+
+use crate::{LINUX, WINDOWS};
 // -------------------
 // Checker functions
 // -------------------
+pub fn is_node_installed() -> bool {
+    let output = Command::new("node")
+        .arg("--version")
+        .output();
+
+    check_output(output)
+}
+
 pub fn is_npm_installed() -> bool {
     let output = Command::new("npm")
         .arg("--version")
@@ -169,15 +179,19 @@ pub fn create_next_app(project_name: String) -> IOResult<()> {
 // -------------------
 
 pub fn install_brew() -> IOResult<()> {
-    println!("Installing Homebrew...");
+    if !is_brew_installed() {
+        println!("Installing Homebrew...");
 
-    let script_url = "https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh";
-    let command = format!("curl -fsSL {} | /bin/bash", script_url);
+        let script_url = "https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh";
+        let command = format!("curl -fsSL {} | /bin/bash", script_url);
 
-    Command::new("sh")
-        .arg("-c")
-        .arg(command)
-        .output()?;
+        Command::new("sh")
+            .arg("-c")
+            .arg(command)
+            .output()?;
+    } else {
+        println!("Brew is already installed!");
+    }
 
     Ok(())
 }
@@ -198,6 +212,21 @@ pub fn install_choco() -> IOResult<()> {
 
 
     Ok(())
+}
+
+pub fn install_node() -> IOResult<()> {
+    match get_os().as_str() {
+        MACOS => {
+            install_node_macos()
+        },
+        WINDOWS => {
+            install_node_windows()
+        },
+        LINUX => {
+            install_node_linux()
+        },
+        _ => panic!("Unsupported OS")
+    }
 }
 
 pub fn install_node_linux() -> IOResult<()> {

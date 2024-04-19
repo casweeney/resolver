@@ -103,6 +103,31 @@ pub fn resolve(args: ClapperArgs) -> Result<(), Box<dyn Error>> {
                     }
                 }
             }
+        },
+        EntityType::Install(install_command) => {
+            match install_command.command {
+                InstallSubCommand::Brew => {
+                    match install_brew() {
+                        Ok(_) => println!("Homebrew installation successful!"),
+                        Err(e) => eprintln!("Failed to Install Homebrew {}", e),
+                    }
+                },
+                InstallSubCommand::Choco => {
+                    match install_choco() {
+                        Ok(_) => println!("Chocolatey installation successful!"),
+                        Err(e) => eprintln!("Failed to Install Chocolatey {}", e),
+                    }
+                },
+                InstallSubCommand::Node => {
+                    match install_node() {
+                        Ok(_) => println!("Node.js installation successful!"),
+                        Err(e) => eprintln!("Failed to Install Node.js {}", e),
+                    }
+                },
+                InstallSubCommand::Scarb => {
+
+                }
+            }
         }
     }
 
