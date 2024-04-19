@@ -2,7 +2,7 @@ use std::fs;
 use std::io::Error;
 use std::process::{Command, Output};
 pub use std::io::Result as IOResult;
-
+use std::env::consts::OS;
 // -------------------
 // Checker functions
 // -------------------
@@ -38,6 +38,42 @@ pub fn is_laravel_installed() -> bool {
     check_output(output)
 }
 
+pub fn is_scarb_installed() -> bool {
+    let output = Command::new("scarb")
+        .arg("--version")
+        .output();
+
+    check_output(output)
+}
+
+pub fn is_starkli_installed() -> bool {
+    let output = Command::new("starkli")
+        .arg("--version")
+        .output();
+
+    check_output(output)
+}
+
+pub fn is_brew_installed() -> bool {
+    let output = Command::new("brew")
+        .arg("--version")
+        .output();
+
+    check_output(output)
+}
+
+pub fn is_choco_installed() -> bool {
+    let output = Command::new("choco")
+        .arg("--version")
+        .output();
+
+    check_output(output)
+}
+
+pub fn get_os() -> String {
+    OS.to_string()
+}
+
 fn check_output(output: Result<Output, Error>) -> bool {
     match output {
         Ok(output) => {
@@ -50,6 +86,8 @@ fn check_output(output: Result<Output, Error>) -> bool {
         _ => false
     }
 }
+
+
 
 // -------------------
 // Scaffold functions
@@ -125,3 +163,94 @@ pub fn create_next_app(project_name: String) -> IOResult<()> {
 
     Ok(())
 }
+
+// -------------------
+// Installer functions
+// -------------------
+
+pub fn install_brew() -> IOResult<()> {
+    println!("Installing Homebrew...");
+
+    let script_url = "https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh";
+    let command = format!("curl -fsSL {} | /bin/bash", script_url);
+
+    let output = Command::new("sh")
+        .arg("-c")
+        .arg(command)
+        .output()?;
+
+    Ok(())
+}
+
+pub fn install_choco() -> IOResult<()> {
+    println!("Installing Chocolatey");
+
+    let powershell_script = r#"
+        Set-ExecutionPolicy Bypass -Scope Process -Force;
+        [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072;
+        iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
+    "#;
+
+    Command::new("powershell")
+        .arg("-Command")
+        .arg(powershell_script)
+        .output()?;
+
+
+    Ok(())
+}
+
+pub fn install_node_linux() -> IOResult<()> {
+    println!("Installing Node.js on Linux...");
+
+    Command::new("sudo")
+        .arg("apt-get")
+        .args(["update"])
+        .status()?;
+
+    Command::new("sudo")
+        .arg("apt-get")
+        .args(["install", "-y", "nodejs"])
+        .status()?;
+    
+    Ok(())
+}
+
+pub fn install_node_macos() -> IOResult<()> {
+    println!("Installing Node.js on macOS...");
+
+    if is_brew_installed() {
+        Command::new("brew")
+            .args(["install", "node"])
+            .status()?;
+    }
+
+    Ok(())
+}
+
+pub fn install_node_windows() -> IOResult<()> {
+    println!("Installing Node.js on Windows...");
+
+    if is_choco_installed() {
+        Command::new("choco")
+            .args(["install", "nodejs", "-y"])
+            .status()?;
+    }
+
+    Ok(())
+}
+
+pub fn install_scarb() -> IOResult<()> {
+    let install_cmd = "curl --proto '=https' --tlsv1.2 -sSf https://docs.swmansion.com/scarb/install.sh | sh";
+
+    Command::new("sh")
+        .arg("-c")
+        .arg(install_cmd)
+        .output()?;
+
+    Ok(())
+}
+
+pub fn install_starkli() {}
+
+pub fn install_composer() {}
