@@ -62,6 +62,23 @@ pub fn is_forge_installed() -> bool {
     check_output(output)
 }
 
+pub fn is_python_installed() -> bool {
+    //TODO: Check for python3 for macos
+    let output = Command::new("python")
+        .arg("--version")
+        .output();
+
+    check_output(output)
+}
+
+pub fn is_pip_installed() -> bool {
+    let output = Command::new("pip")
+        .arg("--version")
+        .output();
+
+    check_output(output)
+}
+
 pub fn is_starkli_installed() -> bool {
     let output = Command::new("starkli")
         .arg("--version")
@@ -211,6 +228,19 @@ pub fn creat_new_foundry_project(project_name: String) -> Result<(), Box<dyn Err
     } else {
         Command::new("forge")
             .args(["init", project_name.as_str()])
+            .spawn()?
+            .wait()?;
+
+        Ok(())
+    }
+}
+
+pub fn create_django_project(project_name: String) -> Result<(), Box<dyn Error>> {
+    if !is_python_installed() && !is_pip_installed() {
+        return  Err("You don't have Python installed".into());
+    } else {
+        Command::new("django-admin")
+            .args(["startproject", project_name.as_str()])
             .spawn()?
             .wait()?;
 

@@ -88,6 +88,8 @@ pub enum InstallSubCommand {
     Node,
     /// Installs Scarb
     Scarb,
+    // This Installs Forge
+    // This Installs Pip
 }
 
 // --------------------------------------
