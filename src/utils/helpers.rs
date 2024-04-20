@@ -54,6 +54,14 @@ pub fn is_scarb_installed() -> bool {
     check_output(output)
 }
 
+pub fn is_forge_installed() -> bool {
+    let output = Command::new("forge")
+        .arg("--version")
+        .output();
+
+    check_output(output)
+}
+
 pub fn is_starkli_installed() -> bool {
     let output = Command::new("starkli")
         .arg("--version")
@@ -197,6 +205,19 @@ pub fn create_next_app(project_name: String) -> Result<(), Box<dyn Error>> {
     }
 }
 
+pub fn creat_new_foundry_project(project_name: String) -> Result<(), Box<dyn Error>> {
+    if !is_forge_installed() {
+        return  Err("You don't have Forge installed".into());
+    } else {
+        Command::new("forge")
+            .args(["init", project_name.as_str()])
+            .spawn()?
+            .wait()?;
+
+        Ok(())
+    }
+}
+
 // -------------------
 // Installer functions
 // -------------------
@@ -268,7 +289,7 @@ pub fn install_node_linux() -> Result<(), Box<dyn Error>> {
         .arg("apt-get")
         .args(["install", "-y", "nodejs"])
         .status()?;
-    
+
     Ok(())
 }
 

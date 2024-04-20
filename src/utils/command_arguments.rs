@@ -32,7 +32,7 @@ pub struct GetCommand{
 
 #[derive(Debug, Subcommand)]
 pub enum GetSubCommand {
-    /// Clones a diamond standard JavaScript project 
+    /// Clones a diamond standard JavaScript project
     Dhjs(GetDir),
     /// Clones a diamond standard TypeScript project
     Dhts(GetDir),
@@ -65,6 +65,8 @@ pub enum ScaffoldSubCommand {
     Laravel(GetDir),
     /// Scaffolds a Next project
     Nextjs(GetDir),
+    /// Scaffolds a Foundry project
+    Foundry(GetDir),
 }
 
 // ----------------
