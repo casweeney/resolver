@@ -89,7 +89,7 @@ pub enum InstallSubCommand {
     /// Installs Scarb
     Scarb,
     // This Installs Forge
-    // This Installs Pip
+    Forge
 }
 
 // --------------------------------------

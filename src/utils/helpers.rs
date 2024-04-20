@@ -365,3 +365,6 @@ pub fn install_scarb() -> Result<(), Box<dyn Error>> {
 pub fn install_starkli() {}
 
 pub fn install_composer() {}
+pub fn install_forge() -> Result<(), Box<dyn Error>> {
+    Ok(())
+}

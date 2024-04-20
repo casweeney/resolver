@@ -152,7 +152,15 @@ pub fn resolve(args: ClapperArgs) -> Result<(), Box<dyn Error>> {
                             return  Err(e);
                         }
                     }
-                }
+                },
+                InstallSubCommand::Forge => {
+                    match install_forge() {
+                        Ok(_) => println!("{}", "Forge installation successful!".bright_blue()),
+                        Err(e) => {
+                            return  Err(e);
+                        }
+                    }
+                },
             }
         }
     }
