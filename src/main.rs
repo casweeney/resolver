@@ -1,5 +1,5 @@
-use resolver::resolve;
-use resolver::ClapperArgs;
+use resolver_cli::resolve;
+use resolver_cli::ClapperArgs;
 use clap::Parser;
 use colored::*;
 

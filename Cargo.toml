@@ -1,5 +1,5 @@
 [package]
-name = "resolver"
+name = "resolver-cli"
 version = "0.1.0"
 edition = "2021"
 authors = ["Casweeney Ojukwu <@codingcas>", "Developer Uche <@developeruche>"]
