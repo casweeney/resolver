@@ -2,8 +2,9 @@
 name = "resolver"
 version = "0.1.0"
 edition = "2021"
-authors = ["Casweeney Ojukwu <@codingcas>"]
+authors = ["Casweeney Ojukwu <@codingcas>", "Developer Uche <@developeruche>"]
 description = "A CLI tool that enable developers to scaffold projects of different development tools and programming languages."
+license = "MIT"
 repository = "https://github.com/casweeney/resolver"
 readme = "README.md"
 
