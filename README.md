@@ -1,5 +1,5 @@
 # Resolver-cli
-Resolver-cli is a CLI tool that enable developers to scaffold projects of different development tools and programming languages.
+Resolver-cli is a CLI tool that enable developers to scaffold projects for different development purposes and programming languages.
 
 ## Installations
 Installing `resolver-cli` requires that you already have `Rust` and `cargo` installed. Use the following command to install Rust and Cargo
@@ -28,6 +28,25 @@ With `resolver-cli` you can create projects for different development tools and 
 
 The `get` action is used to clone selected Diamond Standard Templates from GitHub which covers for Hardhat JavaScript, Hardhat TypeScript and Foundry.
 
+#### Diamond Standard Hardhat JavaScript
+Creates a project boilerplate with Diamond Standard Hardhat JavaScript
+```sh
+resolver-cli get dhjs project_name
+```
+
+#### Diamond Standard Hardhat TypeScript
+Creates a project boilerplate with Diamond Standard Hardhat TypeScript
+```sh
+resolver-cli get dhts project_name
+```
+
+#### Diamond Standard Foundry
+Creates a project boilerplate with Diamond Standard Foundry
+```sh
+resolver-cli get dfd project_name
+```
+
+
 The `scaffold` action is used to scaffold projects for different development tools and languages which includes:
 - ReactJS
 - ReactTs
@@ -35,6 +54,7 @@ The `scaffold` action is used to scaffold projects for different development too
 - NestJs
 - Laravel
 - NextJs
+- Foundry
 
 #### ReactJS
 Creates a React project with JavaScript
@@ -71,3 +91,8 @@ Creates a NextJS project
 ```sh
 resolver-cli scaffold nextjs project_name
 ```
+
+
+The `install` action is install development tools like Node.js, Homebrew, Choco, Scarb
+
+Run `resolver-cli install --help` to see the supported installation tools.
