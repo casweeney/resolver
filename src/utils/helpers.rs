@@ -64,7 +64,7 @@ pub fn is_forge_installed() -> bool {
 
 pub fn is_python_installed() -> bool {
     //TODO: Check for python3 for macos
-    let output = Command::new("python")
+    let output = Command::new("python3")
         .arg("--version")
         .output();
 
@@ -72,7 +72,7 @@ pub fn is_python_installed() -> bool {
 }
 
 pub fn is_pip_installed() -> bool {
-    let output = Command::new("pip")
+    let output = Command::new("pip3")
         .arg("--version")
         .output();
 
@@ -222,7 +222,7 @@ pub fn create_next_app(project_name: String) -> Result<(), Box<dyn Error>> {
     }
 }
 
-pub fn creat_new_foundry_project(project_name: String) -> Result<(), Box<dyn Error>> {
+pub fn create_new_foundry_project(project_name: String) -> Result<(), Box<dyn Error>> {
     if !is_forge_installed() {
         return  Err("You don't have Forge installed".into());
     } else {
