@@ -366,5 +366,17 @@ pub fn install_starkli() {}
 
 pub fn install_composer() {}
 pub fn install_forge() -> Result<(), Box<dyn Error>> {
-    Ok(())
+    if is_forge_installed() {
+        return  Err("Forge is already installed!".into());
+    } else {
+        Command::new("sh")
+            .arg("-c")
+            .arg("curl -L https://foundry.paradigm.xyz | bash")
+            .output()?;
+
+        Command::new("foundryup")
+            .output()?;
+
+        Ok(())
+    }
 }
