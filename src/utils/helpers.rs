@@ -54,6 +54,31 @@ pub fn is_scarb_installed() -> bool {
     check_output(output)
 }
 
+pub fn is_forge_installed() -> bool {
+    let output = Command::new("forge")
+        .arg("--version")
+        .output();
+
+    check_output(output)
+}
+
+pub fn is_python_installed() -> bool {
+    //TODO: Check for python3 for macos
+    let output = Command::new("python3")
+        .arg("--version")
+        .output();
+
+    check_output(output)
+}
+
+pub fn is_pip_installed() -> bool {
+    let output = Command::new("pip3")
+        .arg("--version")
+        .output();
+
+    check_output(output)
+}
+
 pub fn is_starkli_installed() -> bool {
     let output = Command::new("starkli")
         .arg("--version")
@@ -197,6 +222,32 @@ pub fn create_next_app(project_name: String) -> Result<(), Box<dyn Error>> {
     }
 }
 
+pub fn create_new_foundry_project(project_name: String) -> Result<(), Box<dyn Error>> {
+    if !is_forge_installed() {
+        return  Err("You don't have Forge installed".into());
+    } else {
+        Command::new("forge")
+            .args(["init", project_name.as_str()])
+            .spawn()?
+            .wait()?;
+
+        Ok(())
+    }
+}
+
+pub fn create_django_project(project_name: String) -> Result<(), Box<dyn Error>> {
+    if !is_python_installed() && !is_pip_installed() {
+        return  Err("You don't have Python installed".into());
+    } else {
+        Command::new("django-admin")
+            .args(["startproject", project_name.as_str()])
+            .spawn()?
+            .wait()?;
+
+        Ok(())
+    }
+}
+
 // -------------------
 // Installer functions
 // -------------------
@@ -268,7 +319,7 @@ pub fn install_node_linux() -> Result<(), Box<dyn Error>> {
         .arg("apt-get")
         .args(["install", "-y", "nodejs"])
         .status()?;
-    
+
     Ok(())
 }
 
@@ -314,3 +365,18 @@ pub fn install_scarb() -> Result<(), Box<dyn Error>> {
 pub fn install_starkli() {}
 
 pub fn install_composer() {}
+pub fn install_forge() -> Result<(), Box<dyn Error>> {
+    if is_forge_installed() {
+        return  Err("Forge is already installed!".into());
+    } else {
+        Command::new("sh")
+            .arg("-c")
+            .arg("curl -L https://foundry.paradigm.xyz | bash")
+            .output()?;
+
+        Command::new("foundryup")
+            .output()?;
+
+        Ok(())
+    }
+}
