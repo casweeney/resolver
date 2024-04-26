@@ -405,7 +405,9 @@ pub fn install_starkli() -> Result<(), Box<dyn Error>> {
             .arg("curl https://get.starkli.sh | sh")
             .output()?;
 
-        Command::new("starkliup")
+        Command::new("sh")
+            .arg("-c")
+            .arg("starkliup")
             .output()?;
 
         Ok(())
@@ -423,7 +425,9 @@ pub fn install_forge() -> Result<(), Box<dyn Error>> {
             .arg("curl -L https://foundry.paradigm.xyz | bash")
             .output()?;
 
-        Command::new("foundryup")
+        Command::new("sh")
+            .arg("-c")
+            .arg("foundryup")
             .output()?;
 
         Ok(())
