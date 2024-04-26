@@ -95,7 +95,9 @@ pub enum InstallSubCommand {
     /// Installs Forge
     Forge,
     /// Installs Starkli
-    Starkli
+    Starkli,
+    /// Installs Nargo
+    Noirup
 }
 
 // --------------------------------------
