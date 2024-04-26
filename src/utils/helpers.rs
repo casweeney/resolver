@@ -440,7 +440,9 @@ pub fn install_nargo() -> Result<(), Box<dyn Error>> {
             .arg("curl -L https://raw.githubusercontent.com/noir-lang/noirup/main/install | bash")
             .output()?;
 
-        Command::new("noirup")
+        Command::new("sh")
+            .arg("-c")
+            .arg("noirup")
             .output()?;
 
         Ok(())
