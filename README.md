@@ -1,5 +1,5 @@
 # Resolver-cli
-Resolver-cli is a CLI tool that enable developers to scaffold projects for different development purposes, and programming languages.
+Resolver is a CLI tool that enable developers to scaffold projects for different development purpose, tools and programming languages.
 
 ## Installations
 Installing `resolver-cli` requires that you already have `Rust` , and `cargo` installed. Use the following command to install Rust and Cargo:
