@@ -124,6 +124,14 @@ pub fn resolve(args: ClapperArgs) -> Result<(), Box<dyn Error>> {
                             return  Err(e);
                         }
                     }
+                },
+                ScaffoldSubCommand::Vite(dir) => {
+                    match create_vite_project(dir.dir_name.clone()) {
+                        Ok(_) => println!("{}", "Successfully created a Vite project!".bright_blue()),
+                        Err(e) => {
+                            return  Err(e);
+                        }
+                    }
                 }
             }
         },

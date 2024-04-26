@@ -56,6 +56,7 @@ The `scaffold` action is used to scaffold projects for different development too
 - NextJs
 - Foundry
 - Vue
+- Vite
 
 #### ReactJS
 Creates a React project with JavaScript
@@ -103,6 +104,12 @@ resolver-cli scaffold foundry project_name
 Creates a Vue.js project
 ```sh
 resolver-cli scaffold vue project_name
+```
+
+#### Vite
+Creates (Vanilla TypeScript, Vue, React, Preact, Lit, Svelte) project using Vite
+```sh
+resolver-cli scaffold vite project_name
 ```
 
 

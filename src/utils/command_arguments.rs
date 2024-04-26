@@ -68,7 +68,9 @@ pub enum ScaffoldSubCommand {
     /// Scaffolds a Foundry project
     Foundry(GetDir),
     /// Scaffold a Vue.js project
-    Vue(GetDir)
+    Vue(GetDir),
+    /// Scaffold (Vanilla TypeScript, Vue, React, Preact, Lit, Svelte) projects using Vite
+    Vite(GetDir)
 }
 
 // ----------------

@@ -261,6 +261,19 @@ pub fn create_vue_project(project_name: String) -> Result<(), Box<dyn Error>> {
     }
 }
 
+pub fn create_vite_project(project_name: String) -> Result<(), Box<dyn Error>> {
+    if !is_npm_installed() {
+        return  Err("You don't have npm installed".into());
+    } else {
+        Command::new("npm")
+            .args(["create", "vite@latest", project_name.as_str()])
+            .spawn()?
+            .wait()?;
+
+        Ok(())
+    }
+}
+
 // -------------------
 // Installer functions
 // -------------------
