@@ -388,9 +388,24 @@ pub fn install_scarb() -> Result<(), Box<dyn Error>> {
     }
 }
 
-pub fn install_starkli() {}
+pub fn install_starkli() -> Result<(), Box<dyn Error>> {
+    if is_starkli_installed() {
+        return  Err("Starkli is already installed!".into());
+    } else {
+        Command::new("sh")
+            .arg("-c")
+            .arg("curl https://get.starkli.sh | sh")
+            .output()?;
+
+        Command::new("starkliup")
+            .output()?;
+
+        Ok(())
+    }
+}
 
 pub fn install_composer() {}
+
 pub fn install_forge() -> Result<(), Box<dyn Error>> {
     if is_forge_installed() {
         return  Err("Forge is already installed!".into());

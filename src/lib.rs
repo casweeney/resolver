@@ -177,6 +177,14 @@ pub fn resolve(args: ClapperArgs) -> Result<(), Box<dyn Error>> {
                         }
                     }
                 },
+                InstallSubCommand::Starkli => {
+                    match install_starkli() {
+                        Ok(_) => println!("{}", "Starkli installation successful!".bright_blue()),
+                        Err(e) => {
+                            return  Err(e);
+                        }
+                    }
+                }
             }
         }
     }
