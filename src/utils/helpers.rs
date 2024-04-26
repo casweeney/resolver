@@ -103,6 +103,14 @@ pub fn is_choco_installed() -> bool {
     check_output(output)
 }
 
+pub fn is_nargo_installed() -> bool {
+    let output = Command::new("noirup")
+        .arg("--version")
+        .output();
+
+    check_output(output)
+}
+
 pub fn get_os() -> String {
     let os_family = std::env::consts::OS;
 
@@ -416,6 +424,23 @@ pub fn install_forge() -> Result<(), Box<dyn Error>> {
             .output()?;
 
         Command::new("foundryup")
+            .output()?;
+
+        Ok(())
+    }
+}
+
+
+pub fn install_nargo() -> Result<(), Box<dyn Error>> {
+    if is_nargo_installed() {
+        return  Err("nargo is already installed!".into());
+    } else {
+        Command::new("sh")
+            .arg("-c")
+            .arg("curl -L https://raw.githubusercontent.com/noir-lang/noirup/main/install | bash")
+            .output()?;
+
+        Command::new("noirup")
             .output()?;
 
         Ok(())
