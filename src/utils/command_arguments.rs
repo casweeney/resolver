@@ -67,6 +67,8 @@ pub enum ScaffoldSubCommand {
     Nextjs(GetDir),
     /// Scaffolds a Foundry project
     Foundry(GetDir),
+    /// Scaffold a Vue.js project
+    Vue(GetDir)
 }
 
 // ----------------

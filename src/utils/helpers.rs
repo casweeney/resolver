@@ -248,6 +248,19 @@ pub fn create_django_project(project_name: String) -> Result<(), Box<dyn Error>>
     }
 }
 
+pub fn create_vue_project(project_name: String) -> Result<(), Box<dyn Error>> {
+    if !is_npm_installed() {
+        return  Err("You don't have npm installed".into());
+    } else {
+        Command::new("npm")
+            .args(["create", "vue@latest", project_name.as_str()])
+            .spawn()?
+            .wait()?;
+
+        Ok(())
+    }
+}
+
 // -------------------
 // Installer functions
 // -------------------
