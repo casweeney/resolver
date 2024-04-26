@@ -55,6 +55,7 @@ The `scaffold` action is used to scaffold projects for different development too
 - Laravel
 - NextJs
 - Foundry
+- Vue
 
 #### ReactJS
 Creates a React project with JavaScript
@@ -90,6 +91,18 @@ resolver-cli scaffold laravel project_name
 Creates a NextJS project
 ```sh
 resolver-cli scaffold nextjs project_name
+```
+
+#### Foundry
+Creates a new foundry project
+```sh
+resolver-cli scaffold foundry project_name
+```
+
+#### Vue
+Creates a Vue.js project
+```sh
+resolver-cli scaffold vue project_name
 ```
 
 
