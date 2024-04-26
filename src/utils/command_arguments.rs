@@ -97,7 +97,7 @@ pub enum InstallSubCommand {
     /// Installs Starkli
     Starkli,
     /// Installs Nargo
-    Noirup
+    Noir
 }
 
 // --------------------------------------
