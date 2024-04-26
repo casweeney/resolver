@@ -1,14 +1,14 @@
 # Resolver-cli
-Resolver-cli is a CLI tool that enable developers to scaffold projects for different development purposes and programming languages.
+Resolver-cli is a CLI tool that enable developers to scaffold projects for different development purposes, and programming languages.
 
 ## Installations
-Installing `resolver-cli` requires that you already have `Rust` and `cargo` installed. Use the following command to install Rust and Cargo
+Installing `resolver-cli` requires that you already have `Rust` , and `cargo` installed. Use the following command to install Rust and Cargo:
 
 ```sh
 $ curl --proto '=https' --tlsv1.2 https://sh.rustup.rs -sSf | sh
 ```
 
-To check whether you have Rust installed correctly, open a shell and run the command below:
+To check whether you have Rust installed correctly, open a shell, and run the command below:
 ```sh
 $ rustc --version
 ```
@@ -24,9 +24,9 @@ cargo install resolver-cli
 ```
 
 ## Usage
-With `resolver-cli` you can create projects for different development tools and programming languages. Resolver-cli has three action commands `get`, `scaffold` and `install`.
+With `resolver-cli` you can create projects for different development tools and programming languages. Resolver-cli has three action commands `get`, `scaffold`, and `install`.
 
-The `get` action is used to clone selected Diamond Standard Templates from GitHub which covers for Hardhat JavaScript, Hardhat TypeScript and Foundry.
+The `get` action is used to clone selected Diamond Standard Templates from GitHub which covers for Hardhat JavaScript, Hardhat TypeScript, and Foundry.
 
 #### Diamond Standard Hardhat JavaScript
 Creates a project boilerplate with Diamond Standard Hardhat JavaScript
@@ -112,7 +112,18 @@ Creates (Vanilla TypeScript, Vue, React, Preact, Lit, Svelte) project using Vite
 resolver-cli scaffold vite project_name
 ```
 
+The `install` action installs development tools like Node.js, Homebrew, Choco, Scarb, e.t.c. 
 
-The `install` action is install development tools like Node.js, Homebrew, Choco, Scarb
+- To install node, run:
+```resolver-cli install node```
 
-Run `resolver-cli install --help` to see the supported installation tools.
+- To install homebrew, run:
+```resolver-cli install brew```
+
+- To install choco, run:
+```resolver-cli install choco```
+
+- To install scarb, run:
+```resolver-cli install scarb```
+
+Run `resolver-cli install --help` to see all supported installation tools.
