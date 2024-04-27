@@ -70,7 +70,9 @@ pub enum ScaffoldSubCommand {
     /// Scaffold a Vue.js project
     Vue(GetDir),
     /// Scaffold (Vanilla TypeScript, Vue, React, Preact, Lit, Svelte) projects using Vite
-    Vite(GetDir)
+    Vite(GetDir),
+    /// Scaffold a Noir project
+    Noir(GetDir),
 }
 
 // ----------------

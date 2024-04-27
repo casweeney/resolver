@@ -282,6 +282,19 @@ pub fn create_vite_project(project_name: String) -> Result<(), Box<dyn Error>> {
     }
 }
 
+pub fn create_noir_project(project_name: String) -> Result<(), Box<dyn Error>> {
+    if !is_nargo_installed() {
+        return  Err("You don't have nargo installed".into());
+    } else {
+        Command::new("nargo")
+            .args(["new", project_name.as_str()])
+            .spawn()?
+            .wait()?;
+
+        Ok(())
+    }
+}
+
 // -------------------
 // Installer functions
 // -------------------

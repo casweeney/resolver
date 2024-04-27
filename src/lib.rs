@@ -132,6 +132,14 @@ pub fn resolve(args: ClapperArgs) -> Result<(), Box<dyn Error>> {
                             return  Err(e);
                         }
                     }
+                },
+                ScaffoldSubCommand::Noir(dir) => {
+                    match create_noir_project(dir.dir_name.clone()) {
+                        Ok(_) => println!("{}", "Successfully created a Noir project!".bright_blue()),
+                        Err(e) => {
+                            return  Err(e);
+                        }
+                    }
                 }
             }
         },
