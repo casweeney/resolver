@@ -73,6 +73,8 @@ pub enum ScaffoldSubCommand {
     Vite(GetDir),
     /// Scaffold a Noir project
     Noir(GetDir),
+    /// Scaffold a Starknet Foundry project
+    SnFoundry(GetDir),
 }
 
 // ----------------
@@ -99,7 +101,9 @@ pub enum InstallSubCommand {
     /// Installs Starkli
     Starkli,
     /// Installs Nargo
-    Noir
+    Noir,
+    // installs Starknet Foundry
+    SnFoundry,
 }
 
 // --------------------------------------

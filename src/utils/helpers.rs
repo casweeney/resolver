@@ -295,6 +295,19 @@ pub fn create_noir_project(project_name: String) -> Result<(), Box<dyn Error>> {
     }
 }
 
+pub fn create_starknet_foundry_project(project_name: String) -> Result<(), Box<dyn Error>> {
+    if !is_forge_installed() {
+        return  Err("You don't have Forge installed".into());
+    } else {
+        Command::new("snforge")
+            .args(["init", project_name.as_str()])
+            .spawn()?
+            .wait()?;
+
+        Ok(())
+    }
+}
+
 // -------------------
 // Installer functions
 // -------------------
@@ -464,4 +477,18 @@ pub fn install_nargo() -> Result<(), Box<dyn Error>> {
 
         Ok(())
     }
+}
+
+pub fn install_snforge() -> Result<(), Box<dyn Error>> {
+    Command::new("sh")
+        .arg("-c")
+        .arg("curl -L https://raw.githubusercontent.com/foundry-rs/starknet-foundry/master/scripts/install.sh | sh")
+        .output()?;
+
+    Command::new("sh")
+        .arg("-c")
+        .arg("snfoundryup")
+        .output()?;
+
+    Ok(())
 }

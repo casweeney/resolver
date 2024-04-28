@@ -140,6 +140,14 @@ pub fn resolve(args: ClapperArgs) -> Result<(), Box<dyn Error>> {
                             return  Err(e);
                         }
                     }
+                },
+                ScaffoldSubCommand::SnFoundry(dir) => {
+                    match create_starknet_foundry_project(dir.dir_name.clone()) {
+                        Ok(_) => println!("{}", "Successfully created a starknet foundry project!".bright_blue()),
+                        Err(e) => {
+                            return Err(e);
+                        }
+                    }
                 }
             }
         },
@@ -198,6 +206,14 @@ pub fn resolve(args: ClapperArgs) -> Result<(), Box<dyn Error>> {
                         Ok(_) => println!("{}", "Noturup installation successful!".bright_blue()),
                         Err(e) => {
                             return  Err(e);
+                        }
+                    }
+                },
+                InstallSubCommand::SnFoundry => {
+                    match install_snforge() {
+                        Ok(_) => println!("{}", "Starknet Foundry installatin successful!".bright_blue()),
+                        Err(e) => {
+                            return Err(e)
                         }
                     }
                 },
