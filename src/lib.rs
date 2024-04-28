@@ -209,16 +209,8 @@ pub fn resolve(args: ClapperArgs) -> Result<(), Box<dyn Error>> {
                         }
                     }
                 },
-                // InstallSubCommand::Snfoundry => {
-                //     match install_snforge() {
-                //         Ok(_) => println!("{}", "Starknet Foundry installatin successful!".bright_blue()),
-                //         Err(e) => {
-                //             return Err(e)
-                //         }
-                //     }
-                // },
-                InstallSubCommand::Snfoundry(ver) => {
-                    match install_snforge(ver.version_name.clone()) {
+                InstallSubCommand::Snfoundry(version) => {
+                    match install_snforge(version.version_name.clone()) {
                         Ok(_) => println!("{}", "Starknet Foundry installation successful!".bright_blue()),
                         Err(e) => {
                             return Err(e)
