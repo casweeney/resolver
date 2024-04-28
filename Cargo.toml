@@ -1,6 +1,6 @@
 [package]
 name = "resolver-cli"
-version = "0.1.1"
+version = "0.1.2"
 edition = "2021"
 authors = ["Casweeney Ojukwu <@codingcas>", "Developer Uche <@developeruche>"]
 description = "Resolver is a CLI tool that enable developers to scaffold projects for different development purpose, tools and programming languages."
