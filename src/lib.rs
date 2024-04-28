@@ -140,6 +140,14 @@ pub fn resolve(args: ClapperArgs) -> Result<(), Box<dyn Error>> {
                             return  Err(e);
                         }
                     }
+                },
+                ScaffoldSubCommand::Snforge(dir) => {
+                    match create_starknet_foundry_project(dir.dir_name.clone()) {
+                        Ok(_) => println!("{}", "Successfully created a starknet foundry project!".bright_blue()),
+                        Err(e) => {
+                            return Err(e);
+                        }
+                    }
                 }
             }
         },
@@ -201,6 +209,22 @@ pub fn resolve(args: ClapperArgs) -> Result<(), Box<dyn Error>> {
                         }
                     }
                 },
+                // InstallSubCommand::Snfoundry => {
+                //     match install_snforge() {
+                //         Ok(_) => println!("{}", "Starknet Foundry installatin successful!".bright_blue()),
+                //         Err(e) => {
+                //             return Err(e)
+                //         }
+                //     }
+                // },
+                InstallSubCommand::Snfoundry(ver) => {
+                    match install_snforge(ver.version_name.clone()) {
+                        Ok(_) => println!("{}", "Starknet Foundry installation successful!".bright_blue()),
+                        Err(e) => {
+                            return Err(e)
+                        }
+                    }
+                }
             }
         }
     }

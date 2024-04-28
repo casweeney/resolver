@@ -295,62 +295,65 @@ pub fn create_noir_project(project_name: String) -> Result<(), Box<dyn Error>> {
     }
 }
 
+pub fn create_starknet_foundry_project(project_name: String) -> Result<(), Box<dyn Error>> {
+    if !is_forge_installed() {
+        return  Err("You don't have Forge installed".into());
+    } else {
+        Command::new("snforge")
+            .args(["init", project_name.as_str()])
+            .spawn()?
+            .wait()?;
+
+        Ok(())
+    }
+}
+
 // -------------------
 // Installer functions
 // -------------------
 
 pub fn install_brew() -> Result<(), Box<dyn Error>> {
-    if is_brew_installed() {
-        return  Err("Brew is already installed!".into());
-    } else {
-        println!("Installing Homebrew...");
+    println!("Installing Homebrew...");
 
-        let script_url = "https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh";
-        let command = format!("curl -fsSL {} | /bin/bash", script_url);
+    let script_url = "https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh";
+    let command = format!("curl -fsSL {} | /bin/bash", script_url);
 
-        Command::new("sh")
-            .arg("-c")
-            .arg(command)
-            .output()?;
+    Command::new("sh")
+        .arg("-c")
+        .arg(command)
+        .output()?;
 
-        Ok(())
-    }
+    Ok(())
 }
 
 pub fn install_choco() -> Result<(), Box<dyn Error>> {
-    if is_choco_installed() {
-        return  Err("Chocolatey is already installed!".into());
-    } else {
-        println!("Installing Chocolatey");
+    println!("Installing Chocolatey...");
 
-        let powershell_script = r#"
-            Set-ExecutionPolicy Bypass -Scope Process -Force;
-            [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072;
-            iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
-        "#;
+    let powershell_script = r#"
+        Set-ExecutionPolicy Bypass -Scope Process -Force;
+        [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072;
+        iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
+    "#;
 
-        Command::new("powershell")
-            .arg("-Command")
-            .arg(powershell_script)
-            .output()?;
+    Command::new("powershell")
+        .arg("-Command")
+        .arg(powershell_script)
+        .output()?;
 
-        Ok(())
-    }
+    Ok(())
 }
 
 pub fn install_node() -> Result<(), Box<dyn Error>> {
-    if is_node_installed() {
-        return  Err("Node is already installed!".into());
-    } else {
-        // let os_family = std::env::consts::OS;
-        let os_family = get_os();
+    println!("Installing the Latest Version of Node...");
 
-        match os_family.as_str() {
-            "linux" => install_node_linux(),
-            "windows" => install_node_windows(),
-            "macos" => install_node_macos(),
-            _ => panic!("Unsupported OS")
-        }
+    // let os_family = std::env::consts::OS;
+    let os_family = get_os();
+
+    match os_family.as_str() {
+        "linux" => install_node_linux(),
+        "windows" => install_node_windows(),
+        "macos" => install_node_macos(),
+        _ => panic!("Unsupported OS")
     }
 }
 
@@ -395,73 +398,96 @@ pub fn install_node_windows() -> Result<(), Box<dyn Error>> {
 }
 
 pub fn install_scarb() -> Result<(), Box<dyn Error>> {
-    if is_scarb_installed() {
-        return  Err("Scarb is already installed!".into());
-    } else {
-        let install_cmd = "curl --proto '=https' --tlsv1.2 -sSf https://docs.swmansion.com/scarb/install.sh | sh";
+    println!("Installing the Latest Version of Scarb...");
 
-        Command::new("sh")
-            .arg("-c")
-            .arg(install_cmd)
-            .output()?;
+    let install_cmd = "curl --proto '=https' --tlsv1.2 -sSf https://docs.swmansion.com/scarb/install.sh | sh";
 
-        Ok(())
-    }
+    Command::new("sh")
+        .arg("-c")
+        .arg(install_cmd)
+        .output()?;
+
+    Ok(())
 }
 
 pub fn install_starkli() -> Result<(), Box<dyn Error>> {
-    if is_starkli_installed() {
-        return  Err("Starkli is already installed!".into());
-    } else {
-        Command::new("sh")
-            .arg("-c")
-            .arg("curl https://get.starkli.sh | sh")
-            .output()?;
+    println!("Installing the Latest Version of Starkli...");
 
-        Command::new("sh")
-            .arg("-c")
-            .arg("starkliup")
-            .output()?;
+    Command::new("sh")
+        .arg("-c")
+        .arg("curl https://get.starkli.sh | sh")
+        .output()?;
 
-        Ok(())
-    }
+    Command::new("sh")
+        .arg("-c")
+        .arg("starkliup")
+        .output()?;
+
+    Ok(())
 }
 
 pub fn install_composer() {}
 
 pub fn install_forge() -> Result<(), Box<dyn Error>> {
-    if is_forge_installed() {
-        return  Err("Forge is already installed!".into());
-    } else {
-        Command::new("sh")
-            .arg("-c")
-            .arg("curl -L https://foundry.paradigm.xyz | bash")
-            .output()?;
+    println!("Installing the Latest Version of Foundry...");
 
-        Command::new("sh")
-            .arg("-c")
-            .arg("foundryup")
-            .output()?;
+    Command::new("sh")
+        .arg("-c")
+        .arg("curl -L https://foundry.paradigm.xyz | bash")
+        .output()?;
 
-        Ok(())
-    }
+    Command::new("sh")
+        .arg("-c")
+        .arg("foundryup")
+        .output()?;
+
+    Ok(())
 }
 
 
 pub fn install_nargo() -> Result<(), Box<dyn Error>> {
-    if is_nargo_installed() {
-        return  Err("nargo is already installed!".into());
-    } else {
+    println!("Installing the Latest Version of Noir...");
+
+    Command::new("sh")
+        .arg("-c")
+        .arg("curl -L https://raw.githubusercontent.com/noir-lang/noirup/main/install | bash")
+        .output()?;
+
+    Command::new("sh")
+        .arg("-c")
+        .arg("noirup")
+        .output()?;
+
+    Ok(())
+}
+
+pub fn install_snforge(version: String) -> Result<(), Box<dyn Error>> {
+    if version.eq("latest") {
+        println!("Installing the Latest Version of Starknet Foundry, Please wait...");
+
         Command::new("sh")
             .arg("-c")
-            .arg("curl -L https://raw.githubusercontent.com/noir-lang/noirup/main/install | bash")
+            .arg("curl -L https://raw.githubusercontent.com/foundry-rs/starknet-foundry/master/scripts/install.sh | sh")
             .output()?;
 
         Command::new("sh")
             .arg("-c")
-            .arg("noirup")
+            .arg("snfoundryup")
+            .output()?;
+
+        Ok(())
+    } else {
+        println!("Installing Version {} of Starknet Foundry, Please wait...", version);
+
+        Command::new("sh")
+            .args(["-c", "curl -L https://raw.githubusercontent.com/foundry-rs/starknet-foundry/master/scripts/install.sh | sh"])
+            .output()?;
+
+        Command::new("sh")
+            .args(["-c", "snfoundryup", "-v", version.as_str()])
             .output()?;
 
         Ok(())
     }
+
 }

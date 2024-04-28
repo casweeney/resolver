@@ -73,6 +73,8 @@ pub enum ScaffoldSubCommand {
     Vite(GetDir),
     /// Scaffold a Noir project
     Noir(GetDir),
+    /// Scaffold a Starknet Foundry project
+    Snforge(GetDir),
 }
 
 // ----------------
@@ -99,7 +101,9 @@ pub enum InstallSubCommand {
     /// Installs Starkli
     Starkli,
     /// Installs Nargo
-    Noir
+    Noir,
+    // installs Starknet Foundry
+    Snfoundry(Version),
 }
 
 // --------------------------------------
@@ -109,4 +113,9 @@ pub enum InstallSubCommand {
 pub struct GetDir {
     /// Specifies the name of the project directory to initialize
     pub dir_name: String
+}
+
+#[derive(Debug, Args)]
+pub struct Version {
+    pub version_name: String
 }

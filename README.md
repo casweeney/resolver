@@ -57,6 +57,7 @@ The `scaffold` action is used to scaffold projects for different development too
 - Foundry
 - Vue
 - Vite
+- Starknet Foundry
 
 #### ReactJS
 Creates a React project with JavaScript
@@ -112,6 +113,12 @@ Creates (Vanilla TypeScript, Vue, React, Preact, Lit, Svelte) project using Vite
 resolver-cli scaffold vite project_name
 ```
 
+#### Starknet Foundry
+Creates a starknet project
+```sh
+resolver-cli scaffold snforge project_name
+```
+
 The `install` action installs development tools like Node.js, Homebrew, Choco, Scarb, e.t.c. 
 
 - To install node, run:
@@ -125,5 +132,11 @@ The `install` action installs development tools like Node.js, Homebrew, Choco, S
 
 - To install scarb, run:
 ```resolver-cli install scarb```
+
+- To install latest version of starknet foundry, run:
+```resolver-cli install snfoundry latest```
+
+- To install a specific version of starknet foundry, run:
+```resolver-cli install snfoundry $versionName```
 
 Run `resolver-cli install --help` to see all supported installation tools.
