@@ -491,3 +491,20 @@ pub fn install_snforge(version: String) -> Result<(), Box<dyn Error>> {
     }
 
 }
+
+pub fn create_rainbowkit_wagmi_next_app(project_name: String) -> Result<(), Box<dyn Error>> {
+    if !is_npm_installed() {
+        return Err("You don't have npm installed".into());
+    } else {
+        Command::new("npm")
+            .args([
+                "init",
+                "@rainbow-me/rainbowkit@latest",
+                project_name.as_str(),
+            ])
+            .spawn()?
+            .wait()?;
+
+        Ok(())
+    }
+}

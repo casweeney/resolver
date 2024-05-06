@@ -148,6 +148,14 @@ pub fn resolve(args: ClapperArgs) -> Result<(), Box<dyn Error>> {
                             return Err(e);
                         }
                     }
+                },
+                ScaffoldSubCommand::RainbowKit(dir) => {
+                    match create_rainbowkit_wagmi_next_app(dir.dir_name.clone()) {
+                        Ok(_) => println!("{}", "Successfully created a Rainbowkit + Wagmi + Next.js app project!".bright_blue()),
+                        Err(e) => {
+                            return Err(e);
+                        }
+                    }
                 }
             }
         },
