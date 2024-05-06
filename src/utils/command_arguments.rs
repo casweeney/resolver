@@ -24,11 +24,10 @@ pub enum EntityType {
 // GetCommand Args
 // ----------------
 #[derive(Debug, Args)]
-pub struct GetCommand{
+pub struct GetCommand {
     #[clap(subcommand)]
     pub command: GetSubCommand,
 }
-
 
 #[derive(Debug, Subcommand)]
 pub enum GetSubCommand {
@@ -39,14 +38,14 @@ pub enum GetSubCommand {
     /// Clones a diamond standard Foundry project
     Dfd(GetDir),
     /// Clones a NestJS project boilerplate
-    Nestjs(GetDir)
+    Nestjs(GetDir),
 }
 
 // --------------------
 // ScaffoldCommand Args
 // --------------------
 #[derive(Debug, Args)]
-pub struct ScaffoldCommand{
+pub struct ScaffoldCommand {
     #[clap(subcommand)]
     pub command: ScaffoldSubCommand,
 }
@@ -75,13 +74,15 @@ pub enum ScaffoldSubCommand {
     Noir(GetDir),
     /// Scaffold a Starknet Foundry project
     Snforge(GetDir),
+    /// Scaffold a RainbowKit + Wagmi + Next.js project
+    RainbowKit(GetDir),
 }
 
 // ----------------
 // InstallCommand Args
 // ----------------
 #[derive(Debug, Args)]
-pub struct InstallCommand{
+pub struct InstallCommand {
     #[clap(subcommand)]
     pub command: InstallSubCommand,
 }
@@ -112,10 +113,10 @@ pub enum InstallSubCommand {
 #[derive(Debug, Args)]
 pub struct GetDir {
     /// Specifies the name of the project directory to initialize
-    pub dir_name: String
+    pub dir_name: String,
 }
 
 #[derive(Debug, Args)]
 pub struct Version {
-    pub version_name: String
+    pub version_name: String,
 }
