@@ -76,6 +76,8 @@ pub enum ScaffoldSubCommand {
     Snforge(GetDir),
     /// Scaffold a RainbowKit + Wagmi + Next.js project
     RainbowKit(GetDir),
+    /// Scafold a React-Native Expo project
+    ReactNativeExpo(GetDir)
 }
 
 // ----------------
