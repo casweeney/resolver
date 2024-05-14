@@ -59,6 +59,7 @@ The `scaffold` action is used to scaffold projects for different development too
 - Vite
 - Starknet Foundry
 - RainbowKit + Wagmi + Next.js
+- ReactNative Expo
 
 #### ReactJS
 Creates a React project with JavaScript
@@ -124,6 +125,12 @@ resolver-cli scaffold snforge project_name
 Creates a rainbowKit + wagmi + next.js project
 ```sh
 resolver-cli scaffold rainbowkit project_name
+```
+
+#### ReactNative Expo
+Creates a ReactNative Expo project
+```sh
+resolver-cli scaffold reactnativeexpo project_name
 ```
 
 The `install` action installs development tools like Node.js, Homebrew, Choco, Scarb, e.t.c. 

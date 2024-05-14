@@ -308,6 +308,19 @@ pub fn create_starknet_foundry_project(project_name: String) -> Result<(), Box<d
     }
 }
 
+pub fn create_expo_app(project_name: String) -> Result<(), Box<dyn Error>> {
+    if !is_npm_installed() {
+        return  Err("You don't have npm installed".into());
+    } else {
+        Command::new("npx")
+            .args(["create-expo-app", project_name.as_str()])
+            .spawn()?
+            .wait()?;
+
+        Ok(())
+    }
+}
+
 // -------------------
 // Installer functions
 // -------------------

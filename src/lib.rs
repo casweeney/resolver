@@ -156,6 +156,14 @@ pub fn resolve(args: ClapperArgs) -> Result<(), Box<dyn Error>> {
                             return Err(e);
                         }
                     }
+                },
+                ScaffoldSubCommand::ReactNativeExpo(dir) => {
+                    match create_expo_app(dir.dir_name.clone()) {
+                        Ok(_) => println!("{}", "Successfully created a ReactNative Expo project!".bright_blue()),
+                        Err(e) => {
+                            return  Err(e);
+                        }
+                    }
                 }
             }
         },
