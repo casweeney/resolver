@@ -321,6 +321,19 @@ pub fn create_expo_app(project_name: String) -> Result<(), Box<dyn Error>> {
     }
 }
 
+pub fn create_adonis_project(project_name: String) -> Result<(), Box<dyn Error>> {
+    if !is_npm_installed() {
+        return  Err("You don't have npm installed".into());
+    } else {
+        Command::new("npm")
+            .args(["init", "adonisjs@latest", project_name.as_str()])
+            .spawn()?
+            .wait()?;
+
+        Ok(())
+    }
+}
+
 // -------------------
 // Installer functions
 // -------------------

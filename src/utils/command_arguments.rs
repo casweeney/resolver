@@ -77,7 +77,9 @@ pub enum ScaffoldSubCommand {
     /// Scaffold a RainbowKit + Wagmi + Next.js project
     RainbowKit(GetDir),
     /// Scafold a React-Native Expo project
-    ReactNativeExpo(GetDir)
+    ReactNativeExpo(GetDir),
+    /// Scafold an Adonis.js Project
+    Adonis(GetDir)
 }
 
 // ----------------
