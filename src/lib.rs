@@ -164,6 +164,14 @@ pub fn resolve(args: ClapperArgs) -> Result<(), Box<dyn Error>> {
                             return  Err(e);
                         }
                     }
+                },
+                ScaffoldSubCommand::Adonis(dir) => {
+                    match create_adonis_project(dir.dir_name.clone()) {
+                        Ok(_) => println!("{}", "Successfully created an Adonis.js project!".bright_blue()),
+                        Err(e) => {
+                            return  Err(e);
+                        }
+                    }
                 }
             }
         },
