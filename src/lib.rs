@@ -1,6 +1,6 @@
 use std::fs;
 use git2::Repository;
-use std::error::Error;
+use std::{error::Error, io as input_output};
 use colored::*;
 
 pub mod utils;
@@ -61,20 +61,15 @@ pub fn resolve(args: ClapperArgs) -> Result<(), Box<dyn Error>> {
         },
         EntityType::Scaffold(scaffold_command) => {
             match scaffold_command.command {
-                ScaffoldSubCommand::Reactjs(dir) => {
-                    match create_react_app(dir.dir_name.clone()) {
+                ScaffoldSubCommand::React(dir) => {
+                    let result = match collect_arguement_from_the_terminal().trim() {
+                        "j" => create_react_app(dir.dir_name.clone()),
+                        "t" => create_react_app_with_typescript(dir.dir_name.clone()),
+                        _ => Err("input not recognized".into()),
+                    };
+                    match result {
                         Ok(_) => println!("{}", "Successfully created the React project!".bright_blue()),
-                        Err(e) => {
-                            return  Err(e);
-                        }
-                    }
-                },
-                ScaffoldSubCommand::Reactts(dir) => {
-                    match create_react_app_with_typescript(dir.dir_name.clone()) {
-                        Ok(_) => println!("{}", "Successfully created the TypeScript React project!".bright_blue()),
-                        Err(e) => {
-                            return  Err(e);
-                        }
+                        Err(e) => { return  Err(e); }
                     }
                 },
                 ScaffoldSubCommand::Hardhat(dir) => {
@@ -246,6 +241,18 @@ pub fn resolve(args: ClapperArgs) -> Result<(), Box<dyn Error>> {
     }
 
     Ok(())
+}
+
+fn collect_arguement_from_the_terminal() -> String {
+    println!("{}", "enter the project type t :: typescript, j :: javascript ".bold().bright_cyan());
+    let mut user_input = String::new();
+    input_output::stdin().read_line(&mut user_input).unwrap();
+    match user_input.trim() {
+        "j" => println!("choice entered is {}", "java_script"),
+        "t" => println!("choice entered is {}", "typescript"),
+        _ => println!("choice entere is not recognized"),
+    }
+    user_input
 }
 
 fn remove_git_dir(dir_name: &String) {
