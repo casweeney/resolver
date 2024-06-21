@@ -63,7 +63,7 @@ The `scaffold` action is used to scaffold projects for different development too
 - Adonis.js
 
 #### React
-Creates a React project with a prompt of choose the scaffold type either js or ts
+Creates a React project with a prompt to choose the scaffold type either js or ts
 ```sh
 resolver-cli scaffold react project_name
 ```
