@@ -62,16 +62,10 @@ The `scaffold` action is used to scaffold projects for different development too
 - ReactNative Expo
 - Adonis.js
 
-#### ReactJS
-Creates a React project with JavaScript
+#### React
+Creates a React project with a prompt to choose the scaffold type either js or ts
 ```sh
-resolver-cli scaffold reactjs project_name
-```
-
-#### ReactTS
-Creates a React project with TypeScript
-```sh
-resolver-cli scaffold reactts project_name
+resolver-cli scaffold react project_name
 ```
 
 #### Hardhat
