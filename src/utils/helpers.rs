@@ -1,112 +1,98 @@
+use std::error::Error;
 use std::fs;
 use std::io::Error as OutputError;
 use std::process::{Command, Output};
-use std::error::Error;
 
 // -------------------
 // Checker functions
 // -------------------
 pub fn is_node_installed() -> bool {
-    let output = Command::new("node")
-        .arg("--version")
-        .output();
+    let output = Command::new("node").arg("--version").output();
 
     check_output(output)
 }
 
 pub fn is_npm_installed() -> bool {
-    let output = Command::new("npm")
-        .arg("--version")
-        .output();
+    let output = Command::new("npm").arg("--version").output();
 
     check_output(output)
 }
 
 pub fn is_nestjs_installed() -> bool {
-    let output = Command::new("nest")
-        .arg("--version")
-        .output();
+    let output = Command::new("nest").arg("--version").output();
 
     check_output(output)
 }
 
 pub fn is_php_installed() -> bool {
-    let output = Command::new("php")
-        .arg("--version")
-        .output();
+    let output = Command::new("php").arg("--version").output();
 
     check_output(output)
 }
 
 pub fn is_composer_installed() -> bool {
-    let output = Command::new("composer")
-        .arg("--version")
-        .output();
+    let output = Command::new("composer").arg("--version").output();
 
     check_output(output)
 }
 
 pub fn is_scarb_installed() -> bool {
-    let output = Command::new("scarb")
-        .arg("--version")
-        .output();
+    let output = Command::new("scarb").arg("--version").output();
 
     check_output(output)
 }
 
 pub fn is_forge_installed() -> bool {
-    let output = Command::new("forge")
-        .arg("--version")
-        .output();
+    let output = Command::new("forge").arg("--version").output();
 
     check_output(output)
 }
 
 pub fn is_python_installed() -> bool {
     //TODO: Check for python3 for macos
-    let output = Command::new("python3")
-        .arg("--version")
-        .output();
+    let output = Command::new("python3").arg("--version").output();
 
     check_output(output)
 }
 
 pub fn is_pip_installed() -> bool {
-    let output = Command::new("pip3")
-        .arg("--version")
-        .output();
+    let output = Command::new("pip3").arg("--version").output();
 
     check_output(output)
 }
 
 pub fn is_starkli_installed() -> bool {
-    let output = Command::new("starkli")
-        .arg("--version")
-        .output();
+    let output = Command::new("starkli").arg("--version").output();
 
     check_output(output)
 }
 
 pub fn is_brew_installed() -> bool {
-    let output = Command::new("brew")
-        .arg("--version")
-        .output();
+    let output = Command::new("brew").arg("--version").output();
 
     check_output(output)
 }
 
 pub fn is_choco_installed() -> bool {
-    let output = Command::new("choco")
-        .arg("--version")
-        .output();
+    let output = Command::new("choco").arg("--version").output();
 
     check_output(output)
 }
 
 pub fn is_nargo_installed() -> bool {
-    let output = Command::new("noirup")
-        .arg("--version")
-        .output();
+    let output = Command::new("noirup").arg("--version").output();
+
+    check_output(output)
+}
+
+pub fn is_solana_cli_installed() -> bool {
+    let output = Command::new("solana").arg("--version").output();
+
+    check_output(output)
+}
+
+pub fn is_anchor_installed() -> bool {
+    let output = Command::new("anchor").arg("--version").output();
 
     check_output(output)
 }
@@ -125,18 +111,17 @@ fn check_output(output: Result<Output, OutputError>) -> bool {
             } else {
                 false
             }
-        },
-        _ => false
+        }
+        _ => false,
     }
 }
-
 
 // -------------------
 // Scaffold functions
 // -------------------
 pub fn create_react_app(project_name: String) -> Result<(), Box<dyn Error>> {
     if !is_npm_installed() {
-        return  Err("You don't have npm installed".into());
+        return Err("You don't have npm installed".into());
     } else {
         Command::new("npx")
             .args(["create-react-app", project_name.as_str()])
@@ -149,10 +134,15 @@ pub fn create_react_app(project_name: String) -> Result<(), Box<dyn Error>> {
 
 pub fn create_react_app_with_typescript(project_name: String) -> Result<(), Box<dyn Error>> {
     if !is_npm_installed() {
-        return  Err("You don't have npm installed".into());
+        return Err("You don't have npm installed".into());
     } else {
         Command::new("npx")
-            .args(["create-react-app", project_name.as_str(), "--template", "typescript"])
+            .args([
+                "create-react-app",
+                project_name.as_str(),
+                "--template",
+                "typescript",
+            ])
             .spawn()?
             .wait()?;
 
@@ -162,7 +152,7 @@ pub fn create_react_app_with_typescript(project_name: String) -> Result<(), Box<
 
 pub fn create_hardhat_project(project_name: String) -> Result<(), Box<dyn Error>> {
     if !is_npm_installed() {
-        return  Err("You don't have npm installed".into());
+        return Err("You don't have npm installed".into());
     } else {
         fs::create_dir_all(project_name.as_str())?;
 
@@ -185,7 +175,7 @@ pub fn create_hardhat_project(project_name: String) -> Result<(), Box<dyn Error>
 pub fn create_nestjs_app(project_name: String) -> Result<(), Box<dyn Error>> {
     if !is_nestjs_installed() {
         if !is_npm_installed() {
-            return  Err("You don't have npm installed".into());
+            return Err("You don't have npm installed".into());
         }
 
         Command::new("npm")
@@ -204,7 +194,7 @@ pub fn create_nestjs_app(project_name: String) -> Result<(), Box<dyn Error>> {
 
 pub fn create_laravel_project(project_name: String) -> Result<(), Box<dyn Error>> {
     if !is_php_installed() && !is_composer_installed() {
-        return  Err("You don't have PHP or Composer installed".into());
+        return Err("You don't have PHP or Composer installed".into());
     } else {
         println!("Creating Laravel project: {}", project_name);
 
@@ -219,7 +209,7 @@ pub fn create_laravel_project(project_name: String) -> Result<(), Box<dyn Error>
 
 pub fn create_next_app(project_name: String) -> Result<(), Box<dyn Error>> {
     if !is_npm_installed() {
-        return  Err("You don't have npm installed".into());
+        return Err("You don't have npm installed".into());
     } else {
         Command::new("npx")
             .args(["create-next-app@latest", project_name.as_str()])
@@ -232,7 +222,7 @@ pub fn create_next_app(project_name: String) -> Result<(), Box<dyn Error>> {
 
 pub fn create_new_foundry_project(project_name: String) -> Result<(), Box<dyn Error>> {
     if !is_forge_installed() {
-        return  Err("You don't have Forge installed".into());
+        return Err("You don't have Forge installed".into());
     } else {
         Command::new("forge")
             .args(["init", project_name.as_str()])
@@ -245,7 +235,7 @@ pub fn create_new_foundry_project(project_name: String) -> Result<(), Box<dyn Er
 
 pub fn create_django_project(project_name: String) -> Result<(), Box<dyn Error>> {
     if !is_python_installed() && !is_pip_installed() {
-        return  Err("You don't have Python installed".into());
+        return Err("You don't have Python installed".into());
     } else {
         Command::new("django-admin")
             .args(["startproject", project_name.as_str()])
@@ -258,7 +248,7 @@ pub fn create_django_project(project_name: String) -> Result<(), Box<dyn Error>>
 
 pub fn create_vue_project(project_name: String) -> Result<(), Box<dyn Error>> {
     if !is_npm_installed() {
-        return  Err("You don't have npm installed".into());
+        return Err("You don't have npm installed".into());
     } else {
         Command::new("npm")
             .args(["create", "vue@latest", project_name.as_str()])
@@ -271,7 +261,7 @@ pub fn create_vue_project(project_name: String) -> Result<(), Box<dyn Error>> {
 
 pub fn create_vite_project(project_name: String) -> Result<(), Box<dyn Error>> {
     if !is_npm_installed() {
-        return  Err("You don't have npm installed".into());
+        return Err("You don't have npm installed".into());
     } else {
         Command::new("npm")
             .args(["create", "vite@latest", project_name.as_str()])
@@ -284,7 +274,7 @@ pub fn create_vite_project(project_name: String) -> Result<(), Box<dyn Error>> {
 
 pub fn create_noir_project(project_name: String) -> Result<(), Box<dyn Error>> {
     if !is_nargo_installed() {
-        return  Err("You don't have nargo installed".into());
+        return Err("You don't have nargo installed".into());
     } else {
         Command::new("nargo")
             .args(["new", project_name.as_str()])
@@ -297,7 +287,7 @@ pub fn create_noir_project(project_name: String) -> Result<(), Box<dyn Error>> {
 
 pub fn create_starknet_foundry_project(project_name: String) -> Result<(), Box<dyn Error>> {
     if !is_forge_installed() {
-        return  Err("You don't have Forge installed".into());
+        return Err("You don't have Forge installed".into());
     } else {
         Command::new("snforge")
             .args(["init", project_name.as_str()])
@@ -310,7 +300,7 @@ pub fn create_starknet_foundry_project(project_name: String) -> Result<(), Box<d
 
 pub fn create_expo_app(project_name: String) -> Result<(), Box<dyn Error>> {
     if !is_npm_installed() {
-        return  Err("You don't have npm installed".into());
+        return Err("You don't have npm installed".into());
     } else {
         Command::new("npx")
             .args(["create-expo-app", project_name.as_str()])
@@ -323,10 +313,42 @@ pub fn create_expo_app(project_name: String) -> Result<(), Box<dyn Error>> {
 
 pub fn create_adonis_project(project_name: String) -> Result<(), Box<dyn Error>> {
     if !is_npm_installed() {
-        return  Err("You don't have npm installed".into());
+        return Err("You don't have npm installed".into());
     } else {
         Command::new("npm")
             .args(["init", "adonisjs@latest", project_name.as_str()])
+            .spawn()?
+            .wait()?;
+
+        Ok(())
+    }
+}
+
+pub fn create_anchor_project_ts(project_name: String) -> Result<(), Box<dyn Error>> {
+    if !is_solana_cli_installed() {
+        return Err("You don't have the Solana CLI installed".into());
+    } else if !is_anchor_installed() {
+        return Err("You don't have Anchor installed".into());
+    } else if !is_node_installed() {
+        return Err("You don't have Node installed".into());
+    } else {
+        Command::new("anchor")
+            .args(["init", project_name.as_str()])
+            .spawn()?
+            .wait()?;
+
+        Ok(())
+    }
+}
+
+pub fn create_anchor_project_rs(project_name: String) -> Result<(), Box<dyn Error>> {
+    if !is_solana_cli_installed() {
+        return Err("You don't have the Solana CLI installed".into());
+    } else if !is_anchor_installed() {
+        return Err("You don't have Anchor installed".into());
+    } else {
+        Command::new("anchor")
+            .args(["init", "--test-template", "rust", project_name.as_str()])
             .spawn()?
             .wait()?;
 
@@ -344,10 +366,7 @@ pub fn install_brew() -> Result<(), Box<dyn Error>> {
     let script_url = "https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh";
     let command = format!("curl -fsSL {} | /bin/bash", script_url);
 
-    Command::new("sh")
-        .arg("-c")
-        .arg(command)
-        .output()?;
+    Command::new("sh").arg("-c").arg(command).output()?;
 
     Ok(())
 }
@@ -379,7 +398,7 @@ pub fn install_node() -> Result<(), Box<dyn Error>> {
         "linux" => install_node_linux(),
         "windows" => install_node_windows(),
         "macos" => install_node_macos(),
-        _ => panic!("Unsupported OS")
+        _ => panic!("Unsupported OS"),
     }
 }
 
@@ -403,9 +422,7 @@ pub fn install_node_macos() -> Result<(), Box<dyn Error>> {
     println!("Installing Node.js on macOS...");
 
     if is_brew_installed() {
-        Command::new("brew")
-            .args(["install", "node"])
-            .status()?;
+        Command::new("brew").args(["install", "node"]).status()?;
     }
 
     Ok(())
@@ -426,12 +443,10 @@ pub fn install_node_windows() -> Result<(), Box<dyn Error>> {
 pub fn install_scarb() -> Result<(), Box<dyn Error>> {
     println!("Installing the Latest Version of Scarb...");
 
-    let install_cmd = "curl --proto '=https' --tlsv1.2 -sSf https://docs.swmansion.com/scarb/install.sh | sh";
+    let install_cmd =
+        "curl --proto '=https' --tlsv1.2 -sSf https://docs.swmansion.com/scarb/install.sh | sh";
 
-    Command::new("sh")
-        .arg("-c")
-        .arg(install_cmd)
-        .output()?;
+    Command::new("sh").arg("-c").arg(install_cmd).output()?;
 
     Ok(())
 }
@@ -444,10 +459,7 @@ pub fn install_starkli() -> Result<(), Box<dyn Error>> {
         .arg("curl https://get.starkli.sh | sh")
         .output()?;
 
-    Command::new("sh")
-        .arg("-c")
-        .arg("starkliup")
-        .output()?;
+    Command::new("sh").arg("-c").arg("starkliup").output()?;
 
     Ok(())
 }
@@ -462,14 +474,10 @@ pub fn install_forge() -> Result<(), Box<dyn Error>> {
         .arg("curl -L https://foundry.paradigm.xyz | bash")
         .output()?;
 
-    Command::new("sh")
-        .arg("-c")
-        .arg("foundryup")
-        .output()?;
+    Command::new("sh").arg("-c").arg("foundryup").output()?;
 
     Ok(())
 }
-
 
 pub fn install_nargo() -> Result<(), Box<dyn Error>> {
     println!("Installing the Latest Version of Noir...");
@@ -479,10 +487,7 @@ pub fn install_nargo() -> Result<(), Box<dyn Error>> {
         .arg("curl -L https://raw.githubusercontent.com/noir-lang/noirup/main/install | bash")
         .output()?;
 
-    Command::new("sh")
-        .arg("-c")
-        .arg("noirup")
-        .output()?;
+    Command::new("sh").arg("-c").arg("noirup").output()?;
 
     Ok(())
 }
@@ -496,14 +501,14 @@ pub fn install_snforge(version: String) -> Result<(), Box<dyn Error>> {
             .arg("curl -L https://raw.githubusercontent.com/foundry-rs/starknet-foundry/master/scripts/install.sh | sh")
             .output()?;
 
-        Command::new("sh")
-            .arg("-c")
-            .arg("snfoundryup")
-            .output()?;
+        Command::new("sh").arg("-c").arg("snfoundryup").output()?;
 
         Ok(())
     } else {
-        println!("Installing Version {} of Starknet Foundry, Please wait...", version);
+        println!(
+            "Installing Version {} of Starknet Foundry, Please wait...",
+            version
+        );
 
         Command::new("sh")
             .args(["-c", "curl -L https://raw.githubusercontent.com/foundry-rs/starknet-foundry/master/scripts/install.sh | sh"])
@@ -515,7 +520,6 @@ pub fn install_snforge(version: String) -> Result<(), Box<dyn Error>> {
 
         Ok(())
     }
-
 }
 
 pub fn create_rainbowkit_wagmi_next_app(project_name: String) -> Result<(), Box<dyn Error>> {
@@ -533,4 +537,33 @@ pub fn create_rainbowkit_wagmi_next_app(project_name: String) -> Result<(), Box<
 
         Ok(())
     }
+}
+
+pub fn install_solana_cli() -> Result<(), Box<dyn Error>> {
+    if is_solana_cli_installed() {
+        println!("You already have the Solana CLI installed");
+    } else {
+        println!("Installing the Latest Version of the Solana CLI...");
+        Command::new("sh")
+            .arg("-c")
+            .arg("curl -sSfL https://release.anza.xyz/stable/install | sh")
+            .status()?;
+    }
+    Ok(())
+}
+pub fn install_anchor() -> Result<(), Box<dyn Error>> {
+    println!("Installing Anchor...");
+
+    Command::new("cargo")
+        .args([
+            "install",
+            "--git",
+            "https://github.com/coral-xyz/anchor",
+            "avm",
+            "--force",
+        ])
+        .spawn()?
+        .wait()?;
+
+    Ok(())
 }

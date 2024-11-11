@@ -140,6 +140,18 @@ Creates an Adonis.js project
 resolver-cli scaffold adonis project_name
 ```
 
+#### Anchor with Typescript tests
+Creates an Anchor project with Typescript tests
+```sh
+resolver-cli scaffold anchor-ts project_name
+```
+
+#### Anchor with Rust tests
+Creates an Anchor project with Rust tests
+```sh
+resolver-cli scaffold anchor-rust project_name
+```
+
 The `install` action installs development tools like Node.js, Homebrew, Choco, Scarb, e.t.c. 
 
 - To install node, run:
@@ -159,5 +171,11 @@ The `install` action installs development tools like Node.js, Homebrew, Choco, S
 
 - To install a specific version of starknet foundry, run:
 ```resolver-cli install snfoundry $versionName```
+
+- To install solana-cli, run:
+```resolver-cli install solana```
+
+- To install anchor, run:
+```resolver-cli install anchor```
 
 Run `resolver-cli install --help` to see all supported installation tools.

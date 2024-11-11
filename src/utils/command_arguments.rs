@@ -79,7 +79,11 @@ pub enum ScaffoldSubCommand {
     /// Scafold a React-Native Expo project
     ReactNativeExpo(GetDir),
     /// Scafold an Adonis.js Project
-    Adonis(GetDir)
+    Adonis(GetDir),
+    /// Scaffold an Anchor project with TypeScript Tests
+    AnchorTS(GetDir),
+    /// Scaffold an Anchor project with Rust Tests
+    AnchorRust(GetDir),
 }
 
 // ----------------
@@ -109,6 +113,10 @@ pub enum InstallSubCommand {
     Noir,
     // installs Starknet Foundry
     Snfoundry(Version),
+    /// Installs the Solana CLI
+    Solana,
+    /// Installs Anchor
+    Anchor,
 }
 
 // --------------------------------------
