@@ -172,6 +172,22 @@ pub fn resolve(args: ClapperArgs) -> Result<(), Box<dyn Error>> {
                             return  Err(e);
                         }
                     }
+                },
+                ScaffoldSubCommand::AnchorTS(dir) => {
+                    match create_anchor_project_ts(dir.dir_name.clone()) {
+                        Ok(_) => println!("{}", "Successfully created an Anchor project with TypeScript tests!".bright_blue()),
+                        Err(e) => {
+                            return Err(e);
+                        }
+                    }
+                },
+                ScaffoldSubCommand::AnchorRust(dir) => {
+                    match create_anchor_project_rs(dir.dir_name.clone()) {
+                        Ok(_) => println!("{}", "Successfully created an Anchor project with Rust tests!".bright_blue()),
+                        Err(e) => {
+                            return Err(e);
+                        }
+                    }
                 }
             }
         },
@@ -240,7 +256,23 @@ pub fn resolve(args: ClapperArgs) -> Result<(), Box<dyn Error>> {
                             return Err(e)
                         }
                     }
-                }
+                },
+                InstallSubCommand::Solana => {
+                    match install_solana_cli() {
+                        Ok(_) => println!("{}", "Solana CLI installation successful!".bright_blue()),
+                        Err(e) => {
+                            return Err(e)
+                        }
+                    }
+                },
+                InstallSubCommand::Anchor => {
+                    match install_anchor() {
+                        Ok(_) => println!("{}", "Anchor installation successful!".bright_blue()),
+                        Err(e) => {
+                            return Err(e)
+                        }
+                    }
+                },
             }
         }
     }
